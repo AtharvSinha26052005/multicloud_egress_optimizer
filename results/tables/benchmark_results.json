@@ -1,0 +1,1922 @@
+[
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Greedy",
+    "compute_cost": 279.54,
+    "egress_cost": 24.87,
+    "total_cost": 304.41,
+    "runtime_seconds": 2e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "Azure"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 284.5,
+    "egress_cost": 1.2,
+    "total_cost": 285.7,
+    "runtime_seconds": 5e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 284.5,
+    "egress_cost": 1.2,
+    "total_cost": 285.7,
+    "runtime_seconds": 0.000334,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "ILP",
+    "compute_cost": 284.5,
+    "egress_cost": 1.2,
+    "total_cost": 285.7,
+    "runtime_seconds": 0.053642,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 284.5,
+    "egress_cost": 1.2,
+    "total_cost": 285.7,
+    "runtime_seconds": 0.010679,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "TEAP",
+    "compute_cost": 284.5,
+    "egress_cost": 1.2,
+    "total_cost": 285.7,
+    "runtime_seconds": 0.018147,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Greedy",
+    "compute_cost": 279.54,
+    "egress_cost": 49.74,
+    "total_cost": 329.28,
+    "runtime_seconds": 1.3e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "Azure"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 284.5,
+    "egress_cost": 2.4,
+    "total_cost": 286.9,
+    "runtime_seconds": 3.8e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 284.5,
+    "egress_cost": 2.4,
+    "total_cost": 286.9,
+    "runtime_seconds": 0.000276,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "ILP",
+    "compute_cost": 284.5,
+    "egress_cost": 2.4,
+    "total_cost": 286.9,
+    "runtime_seconds": 0.051291,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 284.5,
+    "egress_cost": 2.4,
+    "total_cost": 286.9,
+    "runtime_seconds": 0.007842,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "TEAP",
+    "compute_cost": 284.5,
+    "egress_cost": 2.4,
+    "total_cost": 286.9,
+    "runtime_seconds": 0.000689,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Greedy",
+    "compute_cost": 279.54,
+    "egress_cost": 87.05,
+    "total_cost": 366.58,
+    "runtime_seconds": 1.1e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "Azure"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Single-Provider",
+    "compute_cost": 284.5,
+    "egress_cost": 4.2,
+    "total_cost": 288.7,
+    "runtime_seconds": 4.5e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Exhaustive",
+    "compute_cost": 284.5,
+    "egress_cost": 4.2,
+    "total_cost": 288.7,
+    "runtime_seconds": 0.000344,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "ILP",
+    "compute_cost": 284.5,
+    "egress_cost": 4.2,
+    "total_cost": 288.7,
+    "runtime_seconds": 0.059576,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 284.5,
+    "egress_cost": 4.2,
+    "total_cost": 288.7,
+    "runtime_seconds": 0.006778,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "TEAP",
+    "compute_cost": 284.5,
+    "egress_cost": 4.2,
+    "total_cost": 288.7,
+    "runtime_seconds": 0.000595,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Greedy",
+    "compute_cost": 279.54,
+    "egress_cost": 124.35,
+    "total_cost": 403.89,
+    "runtime_seconds": 1.1e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "Azure"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 284.5,
+    "egress_cost": 6.0,
+    "total_cost": 290.5,
+    "runtime_seconds": 3.9e-05,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 284.5,
+    "egress_cost": 6.0,
+    "total_cost": 290.5,
+    "runtime_seconds": 0.000313,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "ILP",
+    "compute_cost": 284.5,
+    "egress_cost": 6.0,
+    "total_cost": 290.5,
+    "runtime_seconds": 0.041353,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 284.5,
+    "egress_cost": 6.0,
+    "total_cost": 290.5,
+    "runtime_seconds": 0.019068,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "3-Tier Web App",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "TEAP",
+    "compute_cost": 284.5,
+    "egress_cost": 6.0,
+    "total_cost": 290.5,
+    "runtime_seconds": 0.000897,
+    "placement": {
+      "web_tier": "GCP",
+      "app_tier": "GCP",
+      "db_tier": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Greedy",
+    "compute_cost": 317.77,
+    "egress_cost": 2.4,
+    "total_cost": 320.17,
+    "runtime_seconds": 1.4e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 317.77,
+    "egress_cost": 2.4,
+    "total_cost": 320.17,
+    "runtime_seconds": 3.8e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 317.77,
+    "egress_cost": 2.4,
+    "total_cost": 320.17,
+    "runtime_seconds": 0.003615,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "ILP",
+    "compute_cost": 317.77,
+    "egress_cost": 2.4,
+    "total_cost": 320.17,
+    "runtime_seconds": 0.059574,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 317.77,
+    "egress_cost": 2.4,
+    "total_cost": 320.17,
+    "runtime_seconds": 0.010721,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "TEAP",
+    "compute_cost": 317.77,
+    "egress_cost": 2.4,
+    "total_cost": 320.17,
+    "runtime_seconds": 0.031203,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Greedy",
+    "compute_cost": 317.77,
+    "egress_cost": 4.8,
+    "total_cost": 322.57,
+    "runtime_seconds": 1.1e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 317.77,
+    "egress_cost": 4.8,
+    "total_cost": 322.57,
+    "runtime_seconds": 3.6e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 317.77,
+    "egress_cost": 4.8,
+    "total_cost": 322.57,
+    "runtime_seconds": 0.00234,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "ILP",
+    "compute_cost": 317.77,
+    "egress_cost": 4.8,
+    "total_cost": 322.57,
+    "runtime_seconds": 0.048729,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 317.77,
+    "egress_cost": 4.8,
+    "total_cost": 322.57,
+    "runtime_seconds": 0.009139,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "TEAP",
+    "compute_cost": 317.77,
+    "egress_cost": 4.8,
+    "total_cost": 322.57,
+    "runtime_seconds": 0.036198,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Greedy",
+    "compute_cost": 317.77,
+    "egress_cost": 8.4,
+    "total_cost": 326.17,
+    "runtime_seconds": 1.9e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Single-Provider",
+    "compute_cost": 317.77,
+    "egress_cost": 8.4,
+    "total_cost": 326.17,
+    "runtime_seconds": 4.8e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Exhaustive",
+    "compute_cost": 317.77,
+    "egress_cost": 8.4,
+    "total_cost": 326.17,
+    "runtime_seconds": 0.002577,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "ILP",
+    "compute_cost": 317.77,
+    "egress_cost": 8.4,
+    "total_cost": 326.17,
+    "runtime_seconds": 0.050085,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 317.77,
+    "egress_cost": 8.4,
+    "total_cost": 326.17,
+    "runtime_seconds": 0.010955,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "TEAP",
+    "compute_cost": 317.77,
+    "egress_cost": 8.4,
+    "total_cost": 326.17,
+    "runtime_seconds": 0.037143,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Greedy",
+    "compute_cost": 317.77,
+    "egress_cost": 12.0,
+    "total_cost": 329.77,
+    "runtime_seconds": 1.2e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 317.77,
+    "egress_cost": 12.0,
+    "total_cost": 329.77,
+    "runtime_seconds": 5.8e-05,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 317.77,
+    "egress_cost": 12.0,
+    "total_cost": 329.77,
+    "runtime_seconds": 0.002115,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "ILP",
+    "compute_cost": 317.77,
+    "egress_cost": 12.0,
+    "total_cost": 329.77,
+    "runtime_seconds": 0.050397,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 317.77,
+    "egress_cost": 12.0,
+    "total_cost": 329.77,
+    "runtime_seconds": 0.012358,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Microservice Mesh",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "TEAP",
+    "compute_cost": 317.77,
+    "egress_cost": 12.0,
+    "total_cost": 329.77,
+    "runtime_seconds": 0.030592,
+    "placement": {
+      "api_gw": "GCP",
+      "auth_svc": "GCP",
+      "order_svc": "GCP",
+      "payment_svc": "GCP",
+      "notif_svc": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Greedy",
+    "compute_cost": 342.41,
+    "egress_cost": 3.6,
+    "total_cost": 346.01,
+    "runtime_seconds": 1.5e-05,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 342.41,
+    "egress_cost": 3.6,
+    "total_cost": 346.01,
+    "runtime_seconds": 4.2e-05,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 342.41,
+    "egress_cost": 3.6,
+    "total_cost": 346.01,
+    "runtime_seconds": 0.000746,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 1.0,
+    "algorithm": "ILP",
+    "compute_cost": 342.41,
+    "egress_cost": 3.6,
+    "total_cost": 346.01,
+    "runtime_seconds": 0.042427,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 342.41,
+    "egress_cost": 3.6,
+    "total_cost": 346.01,
+    "runtime_seconds": 0.008225,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 1.0,
+    "algorithm": "TEAP",
+    "compute_cost": 342.41,
+    "egress_cost": 3.6,
+    "total_cost": 346.01,
+    "runtime_seconds": 0.043822,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Greedy",
+    "compute_cost": 342.41,
+    "egress_cost": 7.2,
+    "total_cost": 349.61,
+    "runtime_seconds": 9e-06,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 342.41,
+    "egress_cost": 7.2,
+    "total_cost": 349.61,
+    "runtime_seconds": 2.8e-05,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 342.41,
+    "egress_cost": 7.2,
+    "total_cost": 349.61,
+    "runtime_seconds": 0.0005,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 2.0,
+    "algorithm": "ILP",
+    "compute_cost": 342.41,
+    "egress_cost": 7.2,
+    "total_cost": 349.61,
+    "runtime_seconds": 0.039162,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 342.41,
+    "egress_cost": 7.2,
+    "total_cost": 349.61,
+    "runtime_seconds": 0.007523,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 2.0,
+    "algorithm": "TEAP",
+    "compute_cost": 342.41,
+    "egress_cost": 7.2,
+    "total_cost": 349.61,
+    "runtime_seconds": 0.036438,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Greedy",
+    "compute_cost": 342.41,
+    "egress_cost": 12.6,
+    "total_cost": 355.01,
+    "runtime_seconds": 1.3e-05,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Single-Provider",
+    "compute_cost": 342.41,
+    "egress_cost": 12.6,
+    "total_cost": 355.01,
+    "runtime_seconds": 0.00012,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Exhaustive",
+    "compute_cost": 342.41,
+    "egress_cost": 12.6,
+    "total_cost": 355.01,
+    "runtime_seconds": 0.000687,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 3.5,
+    "algorithm": "ILP",
+    "compute_cost": 342.41,
+    "egress_cost": 12.6,
+    "total_cost": 355.01,
+    "runtime_seconds": 0.044307,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 342.41,
+    "egress_cost": 12.6,
+    "total_cost": 355.01,
+    "runtime_seconds": 0.010304,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 3.5,
+    "algorithm": "TEAP",
+    "compute_cost": 342.41,
+    "egress_cost": 12.6,
+    "total_cost": 355.01,
+    "runtime_seconds": 0.032606,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Greedy",
+    "compute_cost": 342.41,
+    "egress_cost": 18.0,
+    "total_cost": 360.41,
+    "runtime_seconds": 1.1e-05,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 342.41,
+    "egress_cost": 18.0,
+    "total_cost": 360.41,
+    "runtime_seconds": 4.3e-05,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 342.41,
+    "egress_cost": 18.0,
+    "total_cost": 360.41,
+    "runtime_seconds": 0.000506,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 5.0,
+    "algorithm": "ILP",
+    "compute_cost": 342.41,
+    "egress_cost": 18.0,
+    "total_cost": 360.41,
+    "runtime_seconds": 0.048729,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 342.41,
+    "egress_cost": 18.0,
+    "total_cost": 360.41,
+    "runtime_seconds": 0.011302,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "Data Pipeline",
+    "num_components": 4,
+    "traffic_multiplier": 5.0,
+    "algorithm": "TEAP",
+    "compute_cost": 342.41,
+    "egress_cost": 18.0,
+    "total_cost": 360.41,
+    "runtime_seconds": 0.023923,
+    "placement": {
+      "ingestion": "GCP",
+      "transform": "GCP",
+      "analytics": "GCP",
+      "storage": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Greedy",
+    "compute_cost": 440.39,
+    "egress_cost": 0.6,
+    "total_cost": 440.99,
+    "runtime_seconds": 1.3e-05,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 440.39,
+    "egress_cost": 0.6,
+    "total_cost": 440.99,
+    "runtime_seconds": 3.3e-05,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 440.39,
+    "egress_cost": 0.6,
+    "total_cost": 440.99,
+    "runtime_seconds": 0.000222,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "ILP",
+    "compute_cost": 440.39,
+    "egress_cost": 0.6,
+    "total_cost": 440.99,
+    "runtime_seconds": 0.043666,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 440.39,
+    "egress_cost": 0.6,
+    "total_cost": 440.99,
+    "runtime_seconds": 0.008806,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 1.0,
+    "algorithm": "TEAP",
+    "compute_cost": 440.39,
+    "egress_cost": 0.6,
+    "total_cost": 440.99,
+    "runtime_seconds": 0.000564,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Greedy",
+    "compute_cost": 440.39,
+    "egress_cost": 1.2,
+    "total_cost": 441.59,
+    "runtime_seconds": 7e-06,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 440.39,
+    "egress_cost": 1.2,
+    "total_cost": 441.59,
+    "runtime_seconds": 2.5e-05,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 440.39,
+    "egress_cost": 1.2,
+    "total_cost": 441.59,
+    "runtime_seconds": 0.000262,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "ILP",
+    "compute_cost": 440.39,
+    "egress_cost": 1.2,
+    "total_cost": 441.59,
+    "runtime_seconds": 0.039945,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 440.39,
+    "egress_cost": 1.2,
+    "total_cost": 441.59,
+    "runtime_seconds": 0.007793,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 2.0,
+    "algorithm": "TEAP",
+    "compute_cost": 440.39,
+    "egress_cost": 1.2,
+    "total_cost": 441.59,
+    "runtime_seconds": 0.000563,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Greedy",
+    "compute_cost": 440.39,
+    "egress_cost": 2.1,
+    "total_cost": 442.49,
+    "runtime_seconds": 1e-05,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Single-Provider",
+    "compute_cost": 440.39,
+    "egress_cost": 2.1,
+    "total_cost": 442.49,
+    "runtime_seconds": 4e-05,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Exhaustive",
+    "compute_cost": 440.39,
+    "egress_cost": 2.1,
+    "total_cost": 442.49,
+    "runtime_seconds": 0.000289,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "ILP",
+    "compute_cost": 440.39,
+    "egress_cost": 2.1,
+    "total_cost": 442.49,
+    "runtime_seconds": 0.038775,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 440.39,
+    "egress_cost": 2.1,
+    "total_cost": 442.49,
+    "runtime_seconds": 0.011606,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 3.5,
+    "algorithm": "TEAP",
+    "compute_cost": 440.39,
+    "egress_cost": 2.1,
+    "total_cost": 442.49,
+    "runtime_seconds": 0.000843,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Greedy",
+    "compute_cost": 440.39,
+    "egress_cost": 3.0,
+    "total_cost": 443.39,
+    "runtime_seconds": 8e-06,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 440.39,
+    "egress_cost": 3.0,
+    "total_cost": 443.39,
+    "runtime_seconds": 2.6e-05,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 440.39,
+    "egress_cost": 3.0,
+    "total_cost": 443.39,
+    "runtime_seconds": 0.000161,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "ILP",
+    "compute_cost": 440.39,
+    "egress_cost": 3.0,
+    "total_cost": 443.39,
+    "runtime_seconds": 0.039842,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 440.39,
+    "egress_cost": 3.0,
+    "total_cost": 443.39,
+    "runtime_seconds": 0.006549,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "ML Training",
+    "num_components": 3,
+    "traffic_multiplier": 5.0,
+    "algorithm": "TEAP",
+    "compute_cost": 440.39,
+    "egress_cost": 3.0,
+    "total_cost": 443.39,
+    "runtime_seconds": 0.000602,
+    "placement": {
+      "data_loader": "GCP",
+      "trainer": "GCP",
+      "model_registry": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Greedy",
+    "compute_cost": 365.34,
+    "egress_cost": 18.6,
+    "total_cost": 383.94,
+    "runtime_seconds": 1.3e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "Azure"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 370.3,
+    "egress_cost": 1.8,
+    "total_cost": 372.1,
+    "runtime_seconds": 5.9e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 370.3,
+    "egress_cost": 1.8,
+    "total_cost": 372.1,
+    "runtime_seconds": 0.003391,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "ILP",
+    "compute_cost": 370.3,
+    "egress_cost": 1.8,
+    "total_cost": 372.1,
+    "runtime_seconds": 0.05137,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 370.3,
+    "egress_cost": 1.8,
+    "total_cost": 372.1,
+    "runtime_seconds": 0.009427,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 1.0,
+    "algorithm": "TEAP",
+    "compute_cost": 370.3,
+    "egress_cost": 1.8,
+    "total_cost": 372.1,
+    "runtime_seconds": 0.044405,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Greedy",
+    "compute_cost": 365.34,
+    "egress_cost": 37.2,
+    "total_cost": 402.54,
+    "runtime_seconds": 1.3e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "Azure"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 370.3,
+    "egress_cost": 3.6,
+    "total_cost": 373.9,
+    "runtime_seconds": 3.6e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 370.3,
+    "egress_cost": 3.6,
+    "total_cost": 373.9,
+    "runtime_seconds": 0.002098,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "ILP",
+    "compute_cost": 370.3,
+    "egress_cost": 3.6,
+    "total_cost": 373.9,
+    "runtime_seconds": 0.055865,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 370.3,
+    "egress_cost": 3.6,
+    "total_cost": 373.9,
+    "runtime_seconds": 0.009447,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 2.0,
+    "algorithm": "TEAP",
+    "compute_cost": 370.3,
+    "egress_cost": 3.6,
+    "total_cost": 373.9,
+    "runtime_seconds": 0.042793,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Greedy",
+    "compute_cost": 365.34,
+    "egress_cost": 65.1,
+    "total_cost": 430.44,
+    "runtime_seconds": 1e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "Azure"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Single-Provider",
+    "compute_cost": 370.3,
+    "egress_cost": 6.3,
+    "total_cost": 376.6,
+    "runtime_seconds": 3.6e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Exhaustive",
+    "compute_cost": 370.3,
+    "egress_cost": 6.3,
+    "total_cost": 376.6,
+    "runtime_seconds": 0.002035,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "ILP",
+    "compute_cost": 370.3,
+    "egress_cost": 6.3,
+    "total_cost": 376.6,
+    "runtime_seconds": 0.056419,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 370.3,
+    "egress_cost": 6.3,
+    "total_cost": 376.6,
+    "runtime_seconds": 0.010084,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 3.5,
+    "algorithm": "TEAP",
+    "compute_cost": 370.3,
+    "egress_cost": 6.3,
+    "total_cost": 376.6,
+    "runtime_seconds": 0.034138,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Greedy",
+    "compute_cost": 365.34,
+    "egress_cost": 93.0,
+    "total_cost": 458.34,
+    "runtime_seconds": 1.6e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "Azure"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Single-Provider",
+    "compute_cost": 370.3,
+    "egress_cost": 9.0,
+    "total_cost": 379.3,
+    "runtime_seconds": 6.4e-05,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Exhaustive",
+    "compute_cost": 370.3,
+    "egress_cost": 9.0,
+    "total_cost": 379.3,
+    "runtime_seconds": 0.002538,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "ILP",
+    "compute_cost": 370.3,
+    "egress_cost": 9.0,
+    "total_cost": 379.3,
+    "runtime_seconds": 0.054581,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "Simulated Annealing",
+    "compute_cost": 370.3,
+    "egress_cost": 9.0,
+    "total_cost": 379.3,
+    "runtime_seconds": 0.010144,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  },
+  {
+    "topology": "CodeCourt",
+    "num_components": 5,
+    "traffic_multiplier": 5.0,
+    "algorithm": "TEAP",
+    "compute_cost": 370.3,
+    "egress_cost": 9.0,
+    "total_cost": 379.3,
+    "runtime_seconds": 0.035735,
+    "placement": {
+      "nginx": "GCP",
+      "api_server": "GCP",
+      "redis": "GCP",
+      "judge_workers": "GCP",
+      "postgres": "GCP"
+    }
+  }
+]
