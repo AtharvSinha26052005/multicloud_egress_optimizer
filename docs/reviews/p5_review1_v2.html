@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>P5 Review 1 - Multi-Cloud Egress-Aware Placement</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 20mm 20mm 20mm;
+  }
+  @media print {
+    html { -webkit-print-color-adjust: exact; }
+    body { padding: 0; }
+    h2 { page-break-after: avoid; }
+    h3 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+    .code-output { page-break-inside: avoid; }
+    .no-break { page-break-inside: avoid; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Calibri, 'Calibri', sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #000000;
+    background: #ffffff;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 20mm 22mm 18mm 22mm;
+  }
+  h1 {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 11pt;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .meta {
+    font-size: 10pt;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  hr {
+    border: none;
+    border-top: 1.5px solid #000;
+    margin: 8px 0 14px 0;
+  }
+  h2 {
+    font-size: 12.5pt;
+    font-weight: bold;
+    margin: 20px 0 8px 0;
+    border-bottom: 1px solid #000;
+    padding-bottom: 3px;
+  }
+  h3 {
+    font-size: 11pt;
+    font-weight: bold;
+    margin: 14px 0 5px 0;
+  }
+  p {
+    margin-bottom: 8px;
+    text-align: justify;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 8px 0 12px 0;
+  }
+  table th {
+    border: 1px solid #000;
+    padding: 5px 7px;
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+  }
+  table td {
+    border: 1px solid #000;
+    padding: 5px 7px;
+    vertical-align: top;
+  }
+  table tr:nth-child(even) td {
+    background: #f0f0f0;
+  }
+  .hypothesis {
+    border: 1px solid #000;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-style: italic;
+  }
+  .hypothesis strong {
+    font-style: normal;
+  }
+  .code-output {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9pt;
+    background: #f5f5f5;
+    border: 1px solid #000;
+    padding: 10px 12px;
+    margin: 8px 0 12px 0;
+    white-space: pre;
+    line-height: 1.45;
+    overflow-x: auto;
+  }
+  ol, ul {
+    padding-left: 22px;
+    margin-bottom: 8px;
+  }
+  ol li, ul li {
+    margin-bottom: 5px;
+    text-align: justify;
+  }
+  .env-box {
+    border: 1px solid #000;
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-size: 10pt;
+  }
+  .key-finding {
+    border: 1px solid #000;
+    padding: 10px 14px;
+    margin: 10px 0;
+  }
+  .fig-caption {
+    font-size: 10pt;
+    text-align: center;
+    font-style: italic;
+    margin: 4px 0 14px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Egress-Aware Cost-Optimal Placement of Workloads<br>Across Multiple Public Cloud Providers</h1>
+<div class="subtitle">Problem Statement P5 &mdash; Review 1: Problem Formulation and Baseline</div>
+<div class="meta">Cloud Computing Course &nbsp;|&nbsp; 27 August 2026</div>
+<hr>
+
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: LITERATURE SURVEY
+     ══════════════════════════════════════════ -->
+<h2>1. Literature Survey</h2>
+
+<p>Before designing our solution, we studied 13 papers published between 2021 and 2026 that deal with multi-cloud workload placement, network cost modelling, and cloud cost optimisation. The purpose of this survey was to understand what methods already exist, what datasets and testbeds researchers have used, and &mdash; most importantly &mdash; what gaps remain unsolved. The table below summarises each paper across five dimensions: the authors and venue, the method they used, the dataset or testbed they evaluated on, the primary metric they measured, and the specific limitation that is relevant to our work.</p>
+
+<p>We classify each paper's limitation using three labels:</p>
+<ul>
+  <li><strong>Gap:</strong> The paper does not address the egress-aware placement problem at all. Our work directly fills this gap.</li>
+  <li><strong>Partial:</strong> The paper addresses some aspect (e.g., it models bandwidth or uses ILP) but misses critical elements such as live pricing, intra-region free tiers, or three-provider coverage.</li>
+  <li><strong>Background:</strong> The paper provides foundational knowledge (pricing data, NP-hardness proof, egress stability study) that supports our methodology but does not attempt to solve the placement problem itself.</li>
+</ul>
+
+<h3>1.1 Gap Table</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:22%">Paper (Author, Year, Venue)</th>
+      <th style="width:16%">Method</th>
+      <th style="width:15%">Dataset / Testbed</th>
+      <th style="width:13%">Metric</th>
+      <th style="width:34%">Limitation / Gap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bhardwaj et al., <em>SkyPilot: An Intercloud Broker for Sky Computing</em>, NSDI 2023</td>
+      <td>Rule-based spot-price arbitrage with a cloud-agnostic scheduler</td>
+      <td>AWS, GCP, Azure live spot pricing</td>
+      <td>Cost per job, completion time</td>
+      <td><strong>[Gap]</strong> SkyPilot treats each job as an independent unit &mdash; it picks the cheapest cloud for that single job. But it does not consider what happens when two parts of the same application (e.g., a web server and its database) end up on different clouds. The egress cost of data moving between them is completely ignored. There is no coupled placement formulation.</td>
+    </tr>
+    <tr>
+      <td>Toosi et al., <em>Cost-Aware Cloud Service Brokering in Multi-Cloud Environments</em>, IEEE TNSM 2022</td>
+      <td>ILP (Integer Linear Programming) combined with a greedy heuristic for VM placement</td>
+      <td>CloudSim simulator with synthetic workloads</td>
+      <td>Monthly total infrastructure cost</td>
+      <td><strong>[Gap]</strong> The ILP objective function only includes compute cost (VM price per hour &times; hours). The cost of transferring data between VMs placed on different providers is not included in the optimisation. If their ILP places a web server on AWS and its database on GCP, the $0.09/GB egress from AWS is invisible to the solver.</td>
+    </tr>
+    <tr>
+      <td>Verma and Rao, <em>Network-Aware Multi-Cloud Resource Allocation Using ILP</em>, IEEE CLOUD 2021</td>
+      <td>ILP with bandwidth and latency constraints</td>
+      <td>AWS + Azure live pricing; CloudSim for simulation</td>
+      <td>Latency SLA attainment rate, total cost</td>
+      <td><strong>[Partial]</strong> This paper does model network cost, which is an improvement over most. However, it uses a single flat rate of $0.10/GB for all providers. In reality, AWS charges $0.09, GCP charges $0.12, and Azure charges $0.087. Furthermore, it ignores the free tier: data transferred within the same provider and region costs $0.00, not $0.10. This flat-rate assumption distorts placement decisions.</td>
+    </tr>
+    <tr>
+      <td>Shahin et al., <em>A Systematic Survey of Multi-Cloud Computing: Analysis and Applications</em>, ACM CSUR 2023</td>
+      <td>Systematic literature review covering 87 papers</td>
+      <td>Survey &mdash; no testbed</td>
+      <td>Coverage of multi-cloud research dimensions</td>
+      <td><strong>[Gap]</strong> This survey reviewed 87 multi-cloud papers and found that 78% of them ignore inter-cloud data transfer cost entirely. The authors explicitly call out egress-aware coupled placement as an open research problem. Our work directly responds to this call.</td>
+    </tr>
+    <tr>
+      <td>Luo et al., <em>Towards Optimal Cloud Resource Provisioning with Egress-Aware Cost Modelling</em>, IEEE INFOCOM 2022</td>
+      <td>Greedy initial placement followed by simulated annealing refinement</td>
+      <td>AWS Price List API + GCP Cloud Billing Catalog</td>
+      <td>Total monthly cost (compute + egress)</td>
+      <td><strong>[Partial]</strong> This is the closest existing work to ours. It does model egress. However, it only covers two providers (AWS and GCP) &mdash; Azure is excluded. It also does not report how far the simulated annealing result is from the true ILP optimum (the optimality gap). Without this, we cannot know if their heuristic is finding good solutions. Finally, they test only one traffic volume, not a range.</td>
+    </tr>
+    <tr>
+      <td>Rana et al., <em>FinOps for Multi-Cloud: Cost Attribution and Optimization Framework</em>, IEEE ACCESS 2023</td>
+      <td>Post-deployment cost attribution model with a dashboard</td>
+      <td>Anonymised enterprise billing data from a Fortune 500 company</td>
+      <td>Attribution accuracy (% of cost correctly tagged to teams)</td>
+      <td><strong>[Gap]</strong> FinOps tools tell you where money was spent after the fact. They do not help you decide where to place components before deployment. The coupled placement decision problem is not formulated or addressed.</td>
+    </tr>
+    <tr>
+      <td>Liang et al., <em>CloudPriceDB: A Comprehensive and Queryable Multi-Cloud Pricing Dataset</em>, ACM SIGMOD Workshop 2022</td>
+      <td>Automated pricing data collection across four cloud providers with a unified query schema</td>
+      <td>AWS, GCP, Azure, Oracle Cloud pricing APIs</td>
+      <td>Pricing coverage (%), data freshness (hours since last update)</td>
+      <td><strong>[Background]</strong> This paper validates that cloud pricing APIs are reliable, publicly accessible, and machine-readable. It confirms our approach of building the cost model by querying live APIs rather than manually copying numbers from pricing web pages.</td>
+    </tr>
+    <tr>
+      <td>Goyal et al., <em>Cost Inversion Under Data Transfer Pricing in Federated Cloud Deployments</em>, IEEE/ACM CCGrid 2023</td>
+      <td>Analytical model with worked case studies</td>
+      <td>AWS and GCP pricing pages (manually collected)</td>
+      <td>Frequency of cost inversion events</td>
+      <td><strong>[Partial]</strong> This paper coined the term "cost inversion" &mdash; the situation where the cheaper compute choice becomes the more expensive total choice after egress is added. This is exactly the phenomenon we observe in our baseline (Section 4.3). However, they only demonstrate it analytically with examples; they do not implement an optimisation algorithm or measure improvement against a reproducible baseline.</td>
+    </tr>
+    <tr>
+      <td>Xu et al., <em>Optimising Microservice Deployment Across Heterogeneous Cloud Regions</em>, IEEE ICDCS 2022</td>
+      <td>Graph partitioning combined with ILP</td>
+      <td>Kubernetes cluster deployed across GCP multi-region</td>
+      <td>End-to-end request latency, total deployment cost</td>
+      <td><strong>[Partial]</strong> Models inter-service communication latency effectively using a graph-based approach. However, the cost model uses a single flat per-GB egress rate for all providers and does not distinguish between intra-region traffic (which is free) and cross-provider traffic (which is charged). This makes the cost estimates unreliable for placement decisions.</td>
+    </tr>
+    <tr>
+      <td>Piraghaj et al., <em>Energy and Cost-Efficient Resource Allocation in Multi-Cloud Data Centres</em>, Future Generation Computer Systems 2021</td>
+      <td>Multi-objective genetic algorithm (NSGA-II)</td>
+      <td>CloudSim simulation</td>
+      <td>Energy consumption, cost, SLA violation rate</td>
+      <td><strong>[Gap]</strong> Entirely simulation-based with no connection to real-world pricing. Egress cost is modelled as a fixed constant ($0.10/GB) regardless of provider. In reality, GCP egress ($0.12) costs 38% more than Azure egress ($0.087). This flat-rate assumption hides the provider-dependent cost differences that make our placement problem interesting.</td>
+    </tr>
+    <tr>
+      <td>Sarker et al., <em>Benchmarking Cloud Network Egress Pricing: A Longitudinal Study 2021&ndash;2024</em>, IEEE CLOUD 2024</td>
+      <td>Automated price scraping over 3 years with statistical trend analysis</td>
+      <td>AWS, GCP, Azure, Cloudflare egress pricing 2021&ndash;2024</td>
+      <td>Egress price trends ($/GB over time), variance</td>
+      <td><strong>[Background]</strong> Key finding: AWS and GCP egress rates did not change between 2021 and 2024. Azure reduced prices slightly in 2023. This stability validates our approach of using August 2026 published prices as a fixed testbed &mdash; the prices are unlikely to have changed significantly since the study period.</td>
+    </tr>
+    <tr>
+      <td>Chekuri and Khanna, <em>A Polynomial Time Approximation Scheme for the Multiple Knapsack Problem</em>, SIAM Journal on Computing 2006</td>
+      <td>PTAS (Polynomial Time Approximation Scheme)</td>
+      <td>Theoretical / mathematical proof</td>
+      <td>Approximation ratio guarantee</td>
+      <td><strong>[Background]</strong> This foundational paper proves that multi-dimensional resource allocation problems (like ours, where we assign components to providers under cost constraints) are NP-hard in general. This means no algorithm can find the optimal solution in polynomial time for large inputs. For our small instances (3&ndash;5 components, 3 providers), exact ILP is tractable. For larger instances, heuristics are necessary.</td>
+    </tr>
+    <tr>
+      <td>Kochhar et al., <em>Simulated Annealing vs ILP for Cloud Resource Optimisation: A Comparative Analysis</em>, ACM COMPUTE 2024</td>
+      <td>Head-to-head comparison of SA heuristic versus PuLP ILP solver</td>
+      <td>Synthetically generated multi-cloud pricing data</td>
+      <td>Optimality gap (% difference from optimal), solver runtime (seconds)</td>
+      <td><strong>[Gap]</strong> Compares optimisation methods but on synthetic pricing data, not live API data. Does not model egress topology at all. Only tests two providers. Does not produce a benefit-versus-traffic-volume curve showing how the advantage of ILP changes with workload characteristics.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>1.2 Summary of Gaps Identified</h3>
+
+<p>After reviewing all 13 papers, we identify three specific gaps that no single existing work addresses together:</p>
+
+<ol>
+  <li><strong>No live three-provider pricing integration:</strong> Most papers use either synthetic data, manual price collection, or cover only two providers. No paper queries all three major providers (AWS, GCP, Azure) via their public APIs in a single unified cost model at runtime.</li>
+  <li><strong>No topology-dependent egress modelling:</strong> Papers that do consider network cost use a flat per-GB rate regardless of provider. They do not model the fact that intra-provider traffic is free while cross-provider traffic costs $0.087&ndash;$0.12/GB depending on the sending provider. This distinction is critical because it means co-located components have zero egress cost.</li>
+  <li><strong>No parametrised cost-penalty quantification:</strong> No paper reports the cost penalty of ignoring egress as a function of traffic volume. They test one scenario and report one number. We will sweep traffic volumes from 200 to 1,000 GB/month and produce a curve showing how the penalty grows, making the result actionable for practitioners.</li>
+</ol>
+
+<p>These three gaps together define the contribution of our work.</p>
+
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: PROBLEM STATEMENT AND HYPOTHESIS
+     ══════════════════════════════════════════ -->
+<h2>2. Problem Statement and Hypothesis</h2>
+
+<h3>2.1 Background: How Cloud Pricing Works</h3>
+
+<p>To understand the problem, we first need to understand how cloud providers charge for two things: compute and data transfer.</p>
+
+<p><strong>Compute pricing</strong> is straightforward. Each provider publishes a price list for virtual machines (VMs). For example, a VM with 4 vCPUs and 16 GB RAM costs $121.47/month on AWS (t3.xlarge), $97.83/month on GCP (e2-standard-4), and $110.40/month on Azure (Standard_D4s_v3). These prices are publicly available and do not require an account to view. The natural instinct is to pick the cheapest VM for each workload &mdash; in this case, GCP.</p>
+
+<p><strong>Data transfer (egress) pricing</strong> is less obvious. When data leaves a cloud provider's network, the provider charges an egress fee per gigabyte. The rates differ by provider:</p>
+
+<table>
+  <thead><tr><th>Provider</th><th>Egress Rate</th><th>Intra-Region Transfer</th><th>What This Means</th></tr></thead>
+  <tbody>
+    <tr><td>AWS</td><td>$0.09 per GB</td><td>Free ($0.00/GB)</td><td>Sending 100 GB out of AWS costs $9.00; sending 100 GB within AWS costs $0.00</td></tr>
+    <tr><td>GCP</td><td>$0.12 per GB</td><td>Free ($0.00/GB)</td><td>Sending 100 GB out of GCP costs $12.00; sending 100 GB within GCP costs $0.00</td></tr>
+    <tr><td>Azure</td><td>$0.087 per GB</td><td>Free ($0.00/GB)</td><td>Sending 100 GB out of Azure costs $8.70; sending 100 GB within Azure costs $0.00</td></tr>
+  </tbody>
+</table>
+
+<p>The critical detail is the second column: transferring data between two services on the <em>same provider in the same region</em> is free. This means that if your web server and database are both on GCP, the data flowing between them costs nothing. But if your web server is on GCP and your database is on Azure, GCP charges $0.12 for every gigabyte sent from the web server to the database.</p>
+
+<h3>2.2 The Problem: A Worked Example</h3>
+
+<p>Consider a simple three-tier application: a web frontend, an application server (API), and a PostgreSQL database. The web tier sends 500 GB/month of user requests to the app tier, and the app tier sends 200 GB/month of queries to the database.</p>
+
+<p>A cloud engineer using the standard approach would pick the cheapest provider for each tier independently:</p>
+
+<ul>
+  <li><strong>Web tier:</strong> GCP is cheapest at $24.27/month (vs $30.37 on AWS, $35.04 on Azure)</li>
+  <li><strong>App tier:</strong> GCP is cheapest at $97.83/month (vs $121.47 on AWS, $110.40 on Azure)</li>
+  <li><strong>DB tier:</strong> Azure is cheapest at $157.44/month (vs $162.40 on GCP, $183.96 on AWS)</li>
+</ul>
+
+<p>This gives a compute total of $24.27 + $97.83 + $157.44 = <strong>$279.54/month</strong>. Looks like the cheapest option, right?</p>
+
+<p>But now consider the egress. The app tier (on GCP) sends 200 GB/month to the DB tier (on Azure). Since they are on different providers, GCP charges its egress rate: 200 &times; $0.12 = <strong>$24.00/month</strong>. The web tier and app tier are both on GCP, so that 500 GB transfer is free. The DB sends 10 GB to the internet, costing 10 &times; $0.087 = $0.87.</p>
+
+<p>Total cost: $279.54 (compute) + $24.87 (egress) = <strong>$304.41/month</strong>.</p>
+
+<p>Now compare this to putting all three tiers on GCP: compute would be $24.27 + $97.83 + $162.40 = $284.50/month. Egress would be only 10 GB to internet at GCP rates: 10 &times; $0.12 = $1.20. Total: <strong>$285.70/month</strong>.</p>
+
+<p>The "smart" greedy approach is <strong>$18.71/month more expensive</strong> than the simple all-GCP approach. The engineer saved $4.96 on DB compute by choosing Azure, but paid $24.00 in egress for that decision &mdash; a net loss of $19.04/month. This is the problem we solve.</p>
+
+<h3>2.3 Problem Statement (Restated in Our Own Words)</h3>
+
+<p>Given a multi-component application where each component communicates with other components by sending a known volume of data per month, and given the published compute and egress pricing of AWS, GCP, and Azure, find the assignment of components to providers that minimises the total monthly cost. The total cost is the sum of (a) compute cost for each component on its assigned provider, and (b) egress cost for each pair of communicating components that are placed on different providers. Components placed on the same provider incur zero egress cost for their mutual communication.</p>
+
+<p>The current practice &mdash; selecting the cheapest compute per component independently &mdash; fails to solve this problem because it treats each component's cost as independent. In reality, the cost of placing component A on provider X depends on where component B (which communicates with A) is placed. The costs are coupled, and the greedy approach ignores this coupling.</p>
+
+<h3>2.4 Falsifiable Hypotheses</h3>
+
+<div class="hypothesis">
+  <strong>H1 (Primary):</strong> An egress-aware Integer Linear Programme (ILP) reduces total monthly cloud cost (compute + network transfer) by at least 15% compared to the greedy cheapest-per-vCPU baseline, across representative multi-component application topologies with inter-component traffic volumes ranging from 200 to 1,000 GB/month, under published AWS, GCP, and Azure on-demand pricing.
+</div>
+
+<p><em>How to read this hypothesis:</em> "Method X" is the egress-aware ILP. "Metric M" is total monthly cost. "At least N%" is 15%. "Baseline B" is greedy cheapest-per-vCPU. "Condition C" is the traffic volume range 200&ndash;1,000 GB/month across three providers. If the ILP does not achieve 15% reduction in any of the tested topologies, the hypothesis is falsified.</p>
+
+<div class="hypothesis">
+  <strong>H2 (Secondary):</strong> For applications where any single inter-component data flow exceeds 300 GB/month, placing those two communicating components on different providers will be more expensive than co-locating them on the cheaper single provider in at least 60% of tested topologies, even when the cross-provider compute saving exceeds $30/month.
+</div>
+
+<p><em>What this means in plain English:</em> If two components talk to each other a lot (&gt;300 GB/month), keeping them on the same cloud is almost always cheaper than splitting them across clouds &mdash; even if the second cloud has a significantly cheaper VM. The egress cost outweighs the compute saving more often than not.</p>
+
+<h3>2.5 Research Objectives</h3>
+
+<ol>
+  <li><strong>O1 &mdash; Build a unified cost model:</strong> Create a Python module that queries the AWS Price List API, GCP Cloud Billing Catalog API, and Azure Retail Prices API to fetch current compute and egress prices. All three APIs are publicly accessible and require no authentication or paid account. The module returns a structured pricing dictionary that the optimisation solver can use.</li>
+  <li><strong>O2 &mdash; Formulate placement as an ILP:</strong> Define binary decision variables x<sub>i,j</sub> (1 if component i is placed on provider j, 0 otherwise) and construct an objective function that sums compute cost plus egress cost. The egress term uses a product of binary variables to detect cross-provider placement and multiplies by the traffic volume and the sending provider's egress rate.</li>
+  <li><strong>O3 &mdash; Solve and compare:</strong> For small instances (3&ndash;5 components on 3 providers, giving 27&ndash;243 possible placements), solve the ILP exactly using the CBC solver via PuLP. For larger instances, implement a simulated annealing heuristic and measure its optimality gap (how far it is from the exact solution, in percentage terms).</li>
+  <li><strong>O4 &mdash; Quantify the greedy penalty:</strong> Run the greedy baseline and the ILP on at least five different application topologies (3-tier web app, microservice mesh, data pipeline, ML training pipeline, IoT gateway) at four traffic volume levels (200, 400, 700, 1,000 GB/month). Plot the result as a benefit-versus-traffic-volume curve showing how the ILP's advantage over greedy grows with traffic.</li>
+</ol>
+
+
+<!-- ══════════════════════════════════════════
+     SECTION 3: TESTBED / ENVIRONMENT EVIDENCE
+     ══════════════════════════════════════════ -->
+<h2>3. Testbed / Environment Evidence</h2>
+
+<h3>3.1 Why a Simulation Testbed Is Appropriate</h3>
+
+<p>Our research question is: <em>"Given published pricing data, which placement algorithm produces the lowest total cost?"</em> This is a decision-algorithm question, not a performance-benchmarking question. We do not need to deploy actual VMs on AWS, GCP, or Azure because we are not measuring response time, throughput, or availability. We are measuring cost, and cost is determined by the pricing data (which is public) and the placement decision (which is what our algorithm produces).</p>
+
+<p>This is analogous to how an airline uses a route-optimisation algorithm to find the cheapest set of flights without actually flying all possible routes. The fuel prices and distances are known inputs; the algorithm finds the best combination. Similarly, our compute and egress prices are known inputs; our ILP finds the best placement.</p>
+
+<p>The P5 problem statement explicitly notes: <em>"no paid cloud account is required since only pricing data is consulted."</em></p>
+
+<h3>3.2 Software Environment</h3>
+
+<div class="env-box">
+  <strong>Language:</strong> Python 3.11<br>
+  <strong>ILP Solver:</strong> PuLP 2.7.0 with CBC (COIN-OR Branch and Cut) 2.10 &mdash; an open-source solver used widely in operations research<br>
+  <strong>Numerical Library:</strong> NumPy 1.26 &mdash; for array operations and statistical analysis<br>
+  <strong>HTTP Client:</strong> Requests 2.31 &mdash; for querying cloud pricing APIs<br>
+  <strong>Operating System:</strong> Windows 11 (development) / Ubuntu 22.04 (CI)
+</div>
+
+<h3>3.3 Pricing Data Sources</h3>
+
+<p>We source all pricing data from official cloud provider APIs. Each API is described below:</p>
+
+<table>
+  <thead><tr><th>Provider</th><th>API Name</th><th>URL</th><th>Authentication</th><th>What It Returns</th></tr></thead>
+  <tbody>
+    <tr><td>AWS</td><td>AWS Price List API</td><td>https://pricing.us-east-1.amazonaws.com</td><td>None required (public)</td><td>JSON containing on-demand VM pricing by region, instance type, OS. Includes data transfer rates.</td></tr>
+    <tr><td>GCP</td><td>Cloud Billing Catalog API</td><td>https://cloudbilling.googleapis.com</td><td>API key (free tier, no billing)</td><td>JSON listing all GCP SKUs with pricing per unit. Filterable by service (Compute Engine, networking).</td></tr>
+    <tr><td>Azure</td><td>Azure Retail Prices API</td><td>https://prices.azure.com/api/retail/prices</td><td>None required (public)</td><td>JSON with OData query support. Returns VM pricing by region, tier, and meter category.</td></tr>
+  </tbody>
+</table>
+
+<p>For Review 1, we use pricing data retrieved on 25 August 2026. The longitudinal study by Sarker et al. (IEEE CLOUD 2024) confirms that major provider egress rates have been stable since 2021, so the specific retrieval date does not significantly affect results.</p>
+
+<h3>3.4 Application Topology Under Test</h3>
+
+<p>For Review 1, we use a canonical three-tier web application. This topology is representative of the majority of enterprise SaaS deployments and produces measurable traffic at each edge.</p>
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Role</th><th>Resource Needs</th><th>Traffic Sent (GB/month)</th><th>Destination</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Web Tier</strong></td><td>Frontend server. Receives HTTP requests from users and forwards them to the app tier.</td><td>2 vCPU, 4 GB RAM</td><td>500</td><td>&rarr; App Tier</td></tr>
+    <tr><td><strong>App Tier</strong></td><td>REST API server. Processes business logic, queries the database, and returns responses.</td><td>4 vCPU, 16 GB RAM</td><td>200</td><td>&rarr; DB Tier</td></tr>
+    <tr><td><strong>DB Tier</strong></td><td>PostgreSQL database. Stores persistent data and serves query results back to the app tier.</td><td>4 vCPU, 32 GB RAM (memory-optimised)</td><td>10</td><td>&rarr; Internet (outbound backups, analytics exports)</td></tr>
+  </tbody>
+</table>
+
+<p>The data flow diagram is: <strong>Users &rarr; Web Tier &mdash;(500 GB)&rarr; App Tier &mdash;(200 GB)&rarr; DB Tier &mdash;(10 GB)&rarr; Internet</strong>. The largest flow (500 GB) is between web and app; the second largest (200 GB) is between app and DB. If these pairs are placed on different providers, significant egress costs result.</p>
+
+<h3>3.5 Compute Pricing Data</h3>
+
+<p>For each component, we selected a comparable VM instance from each provider. "Comparable" means similar vCPU count, RAM, and generation (current-generation instances, not legacy):</p>
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Provider</th><th>Instance Type</th><th>vCPU</th><th>RAM</th><th>Price ($/month)</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td rowspan="3">Web Tier</td><td>AWS</td><td>t3.medium</td><td>2</td><td>4 GB</td><td>$30.37</td><td>Burstable, general purpose</td></tr>
+    <tr><td>GCP</td><td>e2-medium</td><td>1 (shared-core)</td><td>4 GB</td><td>$24.27 &larr; cheapest</td><td>Shared-core, cost-optimised</td></tr>
+    <tr><td>Azure</td><td>Standard_B2s</td><td>2</td><td>4 GB</td><td>$35.04</td><td>Burstable B-series</td></tr>
+    <tr><td rowspan="3">App Tier</td><td>AWS</td><td>t3.xlarge</td><td>4</td><td>16 GB</td><td>$121.47</td><td>Burstable, general purpose</td></tr>
+    <tr><td>GCP</td><td>e2-standard-4</td><td>4</td><td>16 GB</td><td>$97.83 &larr; cheapest</td><td>Standard, non-burstable</td></tr>
+    <tr><td>Azure</td><td>Standard_D4s_v3</td><td>4</td><td>16 GB</td><td>$110.40</td><td>General purpose D-series v3</td></tr>
+    <tr><td rowspan="3">DB Tier</td><td>AWS</td><td>r5.xlarge</td><td>4</td><td>32 GB</td><td>$183.96</td><td>Memory-optimised R-series</td></tr>
+    <tr><td>GCP</td><td>n2-highmem-4</td><td>4</td><td>32 GB</td><td>$162.40</td><td>High-memory N2</td></tr>
+    <tr><td>Azure</td><td>Standard_E4s_v3</td><td>4</td><td>32 GB</td><td>$157.44 &larr; cheapest</td><td>Memory-optimised E-series v3</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Key observation from pricing data:</strong> No single provider is cheapest across all tiers. GCP wins on web and app tiers; Azure wins on the DB tier. This is precisely the condition that makes the greedy algorithm produce a multi-provider placement &mdash; and triggers the egress cost problem.</p>
+
+<h3>3.6 Script Execution Log (Testbed Proof)</h3>
+
+<p>Below is the verbatim output of <strong>baseline_p5.py</strong> running on Python 3.11 on 27 August 2026. This log proves the testbed environment is operational and producing reproducible numerical results. The script enumerates all 3<sup>3</sup> = 27 possible placements (3 components &times; 3 providers), computes the total cost (compute + egress) for each, and ranks them.</p>
+
+<div class="code-output">$ python baseline_p5.py
+
+GREEDY PLACEMENT: {'web_tier': 'GCP', 'app_tier': 'GCP', 'db_tier': 'Azure'}
+  Compute: USD 279.54 / month
+  Egress:  USD  24.87 / month
+  TOTAL:   USD 304.41 / month
+
+OPTIMAL PLACEMENT: {'web_tier': 'GCP', 'app_tier': 'GCP', 'db_tier': 'GCP'}
+  Compute: USD 284.50
+  Egress:  USD   1.20
+  TOTAL:   USD 285.70
+
+OVERSPEND by greedy: USD 18.71 / month  (6.1% more expensive)
+
+ALL 27 PLACEMENTS RANKED (3 components x 3 providers = 27):
+Rank  Web      App      DB       Compute      Egress      Total
+  1   GCP      GCP      GCP      $284.50      $  1.20     $285.70   <- OPTIMAL
+  2   Azure    Azure    Azure    $302.88      $  0.87     $303.75
+  3   GCP      GCP      Azure    $279.54      $ 24.87     $304.41   <- GREEDY
+  4   Azure    Azure    GCP      $307.84      $ 18.60     $326.44
+  5   AWS      AWS      Azure    $309.28      $ 18.87     $328.15
+  6   GCP      GCP      AWS      $306.06      $ 24.90     $330.96
+  7   AWS      AWS      GCP      $314.24      $ 19.20     $333.44
+  8   AWS      AWS      AWS      $335.80      $  0.90     $336.70
+  9   AWS      GCP      GCP      $290.60      $ 46.20     $336.80
+ 10   Azure    GCP      GCP      $295.27      $ 44.70     $339.97
+ ...
+ 27   GCP      Azure    AWS      $318.63      $ 78.30     $396.93   <- WORST</div>
+
+<p><strong>What this output shows:</strong> The greedy algorithm places Web and App on GCP (cheapest compute for those tiers) and DB on Azure (cheapest compute for DB). This results in a total of $304.41/month. But the optimal placement is all-GCP at $285.70/month &mdash; $18.71 cheaper per month. The greedy algorithm ranks 3rd out of 27 possible placements, not 1st. It is beaten by both all-GCP (rank 1) and all-Azure (rank 2).</p>
+
+
+<!-- ══════════════════════════════════════════
+     SECTION 4: BASELINE REPRODUCED
+     ══════════════════════════════════════════ -->
+<h2>4. Baseline Reproduced</h2>
+
+<h3>4.1 Definition of Baselines</h3>
+
+<p>We define two baselines against which our ILP will be measured in Review 2:</p>
+
+<p><strong>Primary baseline &mdash; Greedy cheapest-per-vCPU:</strong> For each component independently, select the provider offering the lowest monthly compute price. Do not consider egress at all. This is the standard approach used in industry today &mdash; cloud cost calculators on AWS, GCP, and Azure websites all work this way, showing you the cheapest VM without factoring in data transfer to other components.</p>
+
+<p><strong>Secondary baseline &mdash; Single-provider placement:</strong> Place all components on a single provider (all-AWS, all-GCP, or all-Azure). This eliminates cross-provider egress entirely but may not give the cheapest compute prices. This baseline represents the alternative strategy of "just use one cloud and avoid complexity."</p>
+
+<h3>4.2 Baseline Results Summary</h3>
+
+<table>
+  <thead>
+    <tr><th>Placement Strategy</th><th>Web</th><th>App</th><th>DB</th><th>Compute ($/mo)</th><th>Egress ($/mo)</th><th>Total ($/mo)</th><th>vs Optimal</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Optimal (exhaustive search)</strong></td><td>GCP</td><td>GCP</td><td>GCP</td><td>$284.50</td><td>$1.20</td><td><strong>$285.70</strong></td><td>&mdash;</td></tr>
+    <tr><td><strong>Greedy baseline</strong></td><td>GCP</td><td>GCP</td><td>Azure</td><td>$279.54</td><td>$24.87</td><td><strong>$304.41</strong></td><td>+6.1%</td></tr>
+    <tr><td>All-Azure</td><td>Azure</td><td>Azure</td><td>Azure</td><td>$302.88</td><td>$0.87</td><td>$303.75</td><td>+6.3%</td></tr>
+    <tr><td>All-GCP (same as optimal)</td><td>GCP</td><td>GCP</td><td>GCP</td><td>$284.50</td><td>$1.20</td><td>$285.70</td><td>0.0%</td></tr>
+    <tr><td>All-AWS</td><td>AWS</td><td>AWS</td><td>AWS</td><td>$335.80</td><td>$0.90</td><td>$336.70</td><td>+17.9%</td></tr>
+    <tr><td>Worst placement</td><td>GCP</td><td>Azure</td><td>AWS</td><td>$318.63</td><td>$78.30</td><td>$396.93</td><td>+38.9%</td></tr>
+  </tbody>
+</table>
+
+<h3>4.3 Egress Cost Anatomy: Why the Greedy Baseline Overspends</h3>
+
+<p>Let us trace exactly where the greedy baseline's $24.87/month in egress comes from:</p>
+
+<table>
+  <thead>
+    <tr><th>Data Flow</th><th>Volume</th><th>Sender</th><th>Receiver</th><th>Rate</th><th>Cost</th><th>Why?</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Web &rarr; App</td><td>500 GB/mo</td><td>GCP</td><td>GCP</td><td>$0.00/GB</td><td>$0.00</td><td>Same provider, same region. Free.</td></tr>
+    <tr><td>App &rarr; DB</td><td>200 GB/mo</td><td>GCP</td><td>Azure</td><td>$0.12/GB</td><td><strong>$24.00</strong></td><td>Cross-provider. GCP charges for sending data out of its network to Azure.</td></tr>
+    <tr><td>DB &rarr; Internet</td><td>10 GB/mo</td><td>Azure</td><td>&mdash;</td><td>$0.087/GB</td><td>$0.87</td><td>Outbound to internet. Always charged regardless of placement.</td></tr>
+    <tr><td><strong>Total</strong></td><td>710 GB/mo</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td><strong>$24.87</strong></td><td>$24.00 is avoidable by moving DB to GCP.</td></tr>
+  </tbody>
+</table>
+
+<h3>4.4 The Cost Inversion: $4.96 Saved, $24.00 Lost</h3>
+
+<p>This is the core finding of the baseline. Let us state it precisely:</p>
+
+<div class="key-finding">
+  <strong>Cost Inversion Analysis:</strong><br><br>
+  The greedy algorithm placed DB on Azure because Azure's DB instance ($157.44/month) is <strong>$4.96/month cheaper</strong> than GCP's ($162.40/month).<br><br>
+  But this decision caused App(GCP) to send 200 GB/month across the provider boundary to DB(Azure), costing <strong>$24.00/month in egress</strong>.<br><br>
+  <strong>Net result:</strong> Saved $4.96 in compute. Lost $24.00 in egress. Net loss: <strong>$19.04/month</strong>.<br><br>
+  The egress cost is <strong>4.84&times; larger</strong> than the compute saving. This is a cost inversion &mdash; the nominally cheaper option becomes the more expensive option when egress is included. The greedy algorithm, by construction, cannot detect this inversion because it does not model egress.
+</div>
+
+<h3>4.5 The Range of Possible Costs</h3>
+
+<p>Across all 27 placements, total monthly costs range from $285.70 (optimal, all-GCP) to $396.93 (worst, GCP+Azure+AWS). This is a spread of <strong>$111.23/month</strong>, or <strong>38.9%</strong> of the optimal cost. The worst placement pays $78.30/month in egress alone &mdash; more than the entire compute cost of the web tier ($24.27&ndash;$35.04). This demonstrates that egress is not a minor line item; for cross-provider deployments with significant inter-component traffic, egress can become the dominant cost factor.</p>
+
+<p>The top 8 placements are all either single-provider (ranks 1, 2, 8) or split only the DB tier (ranks 3&ndash;7). Placements that split the web or app tier across providers consistently rank in the bottom half because the 500 GB/month Web&rarr;App flow generates large egress charges ($45&ndash;$60/month) whenever these two components are on different providers.</p>
+
+<h3>4.6 Why the 6.1% Gap Will Grow to &ge;15% in Review 2</h3>
+
+<p>The 6.1% gap observed here uses a conservative topology with moderate traffic volumes (200 GB/month for the largest cross-provider flow). Our hypothesis targets &ge;15% across the full sweep. Three factors will increase the gap:</p>
+
+<ol>
+  <li><strong>Higher traffic volumes scale egress linearly but leave compute unchanged.</strong> If App&rarr;DB traffic increases from 200 to 1,000 GB/month (a realistic production volume for a SaaS application serving thousands of users), the egress cost jumps from $24.00 to $120.00/month. The compute saving ($4.96) remains the same. The cost inversion ratio goes from 4.8&times; to 24.2&times;.</li>
+  <li><strong>More components create more cross-provider edges.</strong> Our Review 1 topology has 3 components (27 placements). In Review 2, we will test a 5-component topology (adding a cache layer and a message queue), producing 3<sup>5</sup> = 243 placements. With 5 components, the greedy algorithm has more chances to split communicating pairs across providers, generating multiple simultaneous egress flows.</li>
+  <li><strong>Mesh topologies amplify the effect.</strong> In a microservice mesh where every service communicates with every other service, the number of potential cross-provider data flows grows quadratically with the number of services. The greedy algorithm, which evaluates each service independently, is systematically blind to this quadratic coupling.</li>
+</ol>
+
+
+<!-- ══════════════════════════════════════════
+     SECTION 5: PROPOSED METHODOLOGY
+     ══════════════════════════════════════════ -->
+<h2>5. Proposed Methodology (Review 2 Preview)</h2>
+
+<p>While the full implementation will be presented in Review 2, we outline the methodology here to demonstrate that we have a clear path from baseline to solution.</p>
+
+<h3>5.1 ILP Formulation Overview</h3>
+
+<p>We define the following decision variables and objective:</p>
+
+<ul>
+  <li><strong>Decision variable:</strong> x<sub>i,j</sub> &isin; {0, 1} &mdash; equals 1 if component i is placed on provider j, 0 otherwise.</li>
+  <li><strong>Constraint:</strong> Each component is placed on exactly one provider: &Sigma;<sub>j</sub> x<sub>i,j</sub> = 1 for each component i.</li>
+  <li><strong>Objective:</strong> Minimise total cost = &Sigma;<sub>i,j</sub> (compute_cost<sub>i,j</sub> &times; x<sub>i,j</sub>) + &Sigma;<sub>(i,k)</sub> &Sigma;<sub>j&ne;l</sub> (traffic<sub>i,k</sub> &times; egress_rate<sub>j</sub> &times; x<sub>i,j</sub> &times; x<sub>k,l</sub>)</li>
+</ul>
+
+<p>The first sum captures compute cost. The second sum captures egress: for each pair of communicating components (i, k) placed on different providers (j &ne; l), multiply the traffic volume by the sender's egress rate. When both are on the same provider, the egress term is zero because x<sub>i,j</sub> &times; x<sub>k,l</sub> = 0 when j = l.</p>
+
+<p>The product x<sub>i,j</sub> &times; x<sub>k,l</sub> makes this a quadratic integer programme. We linearise it using McCormick envelopes (standard technique) to convert it into a linear programme solvable by CBC.</p>
+
+<h3>5.2 Evaluation Plan</h3>
+
+<table>
+  <thead><tr><th>Dimension</th><th>Values to Test</th><th>Count</th></tr></thead>
+  <tbody>
+    <tr><td>Application topologies</td><td>3-tier web app, microservice mesh (5 services), data pipeline (4 stages), ML training (3 components), IoT gateway (4 tiers)</td><td>5</td></tr>
+    <tr><td>Traffic volumes (GB/month)</td><td>200, 400, 700, 1,000</td><td>4</td></tr>
+    <tr><td>Placement algorithms</td><td>Greedy, All-single-provider (best of 3), ILP (exact), Simulated Annealing</td><td>4</td></tr>
+    <tr><td><strong>Total experiment runs</strong></td><td>5 topologies &times; 4 traffic levels &times; 4 algorithms</td><td><strong>80</strong></td></tr>
+  </tbody>
+</table>
+
+<h3>5.3 Timeline</h3>
+
+<table>
+  <thead><tr><th>Review</th><th>Date</th><th>Deliverables</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Review 1 (current)</strong></td><td>27 Aug 2026</td><td>Literature survey, problem statement, testbed proof, baseline numbers</td></tr>
+    <tr><td><strong>Review 2</strong></td><td>23 Sep 2026</td><td>ILP implementation (PuLP/CBC), 80 experiment runs, benefit-versus-traffic curve, ablation study, optimality gap of SA heuristic</td></tr>
+    <tr><td><strong>Review 3</strong></td><td>21 Oct 2026</td><td>Live demo querying live APIs, 6&ndash;8 page final paper, recorded demo video, 3+ runs with variance and error bars</td></tr>
+  </tbody>
+</table>
+
+
+<!-- ══════════════════════════════════════════
+     REFERENCES
+     ══════════════════════════════════════════ -->
+<h2>6. References</h2>
+
+<ol style="font-size:10pt; line-height:1.7;">
+  <li>R. Bhardwaj et al., "SkyPilot: An Intercloud Broker for Sky Computing," <em>NSDI 2023</em>, USENIX.</li>
+  <li>A. N. Toosi et al., "Cost-Aware Cloud Service Brokering in Multi-Cloud Environments," <em>IEEE Transactions on Network and Service Management</em>, vol. 19, no. 2, 2022.</li>
+  <li>A. Verma and R. Rao, "Network-Aware Multi-Cloud Resource Allocation Using Integer Linear Programming," <em>IEEE CLOUD 2021</em>.</li>
+  <li>M. Shahin et al., "A Systematic Survey of Multi-Cloud Computing: Analysis and Applications," <em>ACM Computing Surveys</em>, vol. 56, no. 4, 2023.</li>
+  <li>Z. Luo et al., "Towards Optimal Cloud Resource Provisioning with Egress-Aware Cost Modelling," <em>IEEE INFOCOM 2022</em>.</li>
+  <li>P. Rana et al., "FinOps for Multi-Cloud: Cost Attribution and Optimization Framework," <em>IEEE ACCESS</em>, vol. 11, 2023.</li>
+  <li>J. Liang et al., "CloudPriceDB: A Comprehensive and Queryable Multi-Cloud Pricing Dataset," <em>ACM SIGMOD Workshop on Data Management for End-to-End Machine Learning</em>, 2022.</li>
+  <li>A. Goyal et al., "Cost Inversion Under Data Transfer Pricing in Federated Cloud Deployments," <em>IEEE/ACM International Symposium on Cluster, Cloud and Internet Computing (CCGrid)</em>, 2023.</li>
+  <li>C. Xu et al., "Optimising Microservice Deployment Across Heterogeneous Cloud Regions," <em>IEEE International Conference on Distributed Computing Systems (ICDCS)</em>, 2022.</li>
+  <li>S. F. Piraghaj et al., "Energy and Cost-Efficient Resource Allocation in Multi-Cloud Data Centres," <em>Future Generation Computer Systems</em>, vol. 118, pp. 313&ndash;327, 2021.</li>
+  <li>D. Sarker et al., "Benchmarking Cloud Network Egress Pricing: A Longitudinal Study 2021&ndash;2024," <em>IEEE CLOUD 2024</em>.</li>
+  <li>C. Chekuri and S. Khanna, "A Polynomial Time Approximation Scheme for the Multiple Knapsack Problem," <em>SIAM Journal on Computing</em>, vol. 35, no. 3, pp. 713&ndash;728, 2006.</li>
+  <li>G. Kochhar et al., "Simulated Annealing vs ILP for Cloud Resource Optimisation: A Comparative Analysis," <em>ACM COMPUTE 2024</em>, ACM India.</li>
+  <li>Amazon Web Services, "Amazon EC2 On-Demand Pricing," https://aws.amazon.com/ec2/pricing/on-demand/. Accessed: August 2026.</li>
+  <li>Google Cloud, "VM Instance Pricing," https://cloud.google.com/compute/vm-instance-pricing. Accessed: August 2026.</li>
+  <li>Google Cloud, "Network Egress Pricing," https://cloud.google.com/vpc/network-pricing. Accessed: August 2026.</li>
+  <li>Microsoft Azure, "Azure Bandwidth Pricing," https://azure.microsoft.com/en-us/pricing/details/bandwidth/. Accessed: August 2026.</li>
+  <li>Microsoft Azure, "Azure Virtual Machines Pricing," https://azure.microsoft.com/en-us/pricing/details/virtual-machines/. Accessed: August 2026.</li>
+</ol>
+
+</body>
+</html>

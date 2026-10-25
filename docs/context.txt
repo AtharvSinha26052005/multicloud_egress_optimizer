@@ -1,0 +1,670 @@
+P1  ·  Budget-Constrained Pre-Warming to Reduce Cold-Start Latency in Serverless Platforms
+BACKGROUND
+In the Function-as-a-Service model, a function that has not been invoked recently is evicted from memory. The next invocation must then wait while the platform allocates a sandbox, loads the runtime and initialises the user code. This delay, known as the cold start, can range from a few hundred milliseconds to several seconds and dominates the response time of infrequently used functions. Commercial platforms mitigate it by keeping recently used functions warm for a fixed period, typically five to ten minutes.
+PROBLEM STATEMENT
+A fixed keep-alive window treats every function identically. Memory is therefore consumed holding functions that will not be called again, while functions that are about to receive a burst of traffic may already have been evicted. The platform operator has a finite memory budget, so keeping everything warm is not an option. The unsolved question is how to decide which subset of functions to keep warm at any instant, given a memory budget that is smaller than the total memory required to keep all functions resident.
+OBJECTIVES
+O1.  To characterise the invocation patterns of real serverless workloads and quantify the cold-start penalty incurred under the fixed keep-alive policy.
+O2.  To develop a short-horizon prediction model that estimates the probability of each function being invoked in the next few minutes.
+O3.  To formulate warm-container selection as a resource-constrained optimisation problem in which the predicted benefit of keeping a function warm is weighed against its memory footprint.
+O4.  To implement the resulting policy on a working serverless platform and evaluate the latency improvement obtained per unit of memory spent.
+SCOPE OF WORK
+1.  Deploy OpenFaaS or Knative on a single-node k3s cluster on a laptop or free-tier VM.
+2.  Replay a subset of the Azure Functions invocation trace against the deployment to establish the cold-start latency distribution under the default policy.
+3.  Train a per-function invocation predictor using recency, inter-arrival statistics and time-of-day features.
+4.  Implement the pre-warming controller, which at each interval selects functions to keep warm by solving a knapsack instance over predicted benefit and memory size.
+5.  Repeat the evaluation across at least four memory-budget settings.
+BASELINE FOR COMPARISON
+The fixed ten-minute keep-alive policy, which is the default behaviour of AWS Lambda and of OpenFaaS, together with a no-warming (always-cold) configuration that establishes the worst case.
+EVALUATION METRICS
+Median, 95th and 99th percentile cold-start latency; number of cold starts avoided; memory-minutes consumed by warm containers; prediction precision and recall. The principal result is the curve relating latency improvement to memory budget, not any single latency figure.
+DATASETS AND TOOLS
+Azure Functions Trace 2019 or 2021 (public), k3s, OpenFaaS or Knative, Python with scikit-learn, Locust or a custom replayer.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+The published literature on cold starts concentrates on improving prediction accuracy and assumes memory is available for whatever the predictor recommends. Treating pre-warming as a knapsack problem under an explicit memory budget, and reporting the resulting benefit-versus-budget curve, is the contribution. The paper remains valid even if the predictor is only moderately accurate, because the finding concerns the allocation policy rather than the predictor.
+P2  ·  Energy and Performance Characterisation of Four Isolation Technologies for Edge Inference
+BACKGROUND
+Workloads at the network edge can be isolated in several ways: a full virtual machine under a hypervisor such as KVM, an operating-system container under Docker, a sandboxed container under gVisor, or a lightweight virtual machine under Firecracker. Each represents a different point on the spectrum between strong isolation and low overhead. Published comparisons focus almost entirely on startup latency and throughput.
+PROBLEM STATEMENT
+Edge deployments are frequently power-constrained, being sited in cabinets, on poles or on battery backup. The energy cost of the isolation layer is therefore a first-order concern, yet it is not reported in the comparative literature. It is not currently possible to answer, from published data, how many joules are consumed per inference under each isolation technology at equal throughput, nor whether the isolation layer that is cheapest in latency is also the cheapest in energy.
+OBJECTIVES
+O1.  To construct a measurement harness that records energy consumption and latency for an identical inference workload across four isolation technologies.
+O2.  To quantify the energy consumed per inference under each technology at matched throughput levels.
+O3.  To determine whether the ranking of technologies by energy differs from their ranking by latency, and if so, to identify the cause.
+O4.  To produce a reproducible characterisation that practitioners can use to select an isolation technology under a stated power budget.
+SCOPE OF WORK
+1.  Select a fixed inference workload, for example a quantised MobileNet or a small transformer model, and containerise it once.
+2.  Execute the identical workload under bare metal, KVM, Docker, gVisor and Firecracker.
+3.  Instrument energy consumption using Intel RAPL through the powercap interface or the perf tool, with a wall-plug meter as an optional cross-check.
+4.  Sweep the request arrival rate from light to saturation, holding the model and batch size constant.
+5.  Repeat each configuration at least five times and report variance.
+BASELINE FOR COMPARISON
+Bare-metal execution of the same workload, which establishes the zero-isolation reference against which every overhead figure is expressed.
+EVALUATION METRICS
+Joules per inference; average power draw in watts; 99th percentile latency at matched throughput; memory resident set size; container or virtual machine startup time.
+DATASETS AND TOOLS
+KVM/QEMU, Docker, gVisor, Firecracker, powercap or perf for RAPL access, ONNX Runtime or TensorFlow Lite.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+A rigorously measured energy-per-inference table spanning four isolation levels does not currently exist in the literature in a form that can be cited. Characterisation papers of this kind are accepted at sustainable-computing and edge-computing tracks provided the methodology is sound and the variance is reported honestly. The result is publishable regardless of which technology wins.
+P3  ·  Workload-Aware Selection Between Pre-Copy and Post-Copy Live Migration of Virtual Machines
+BACKGROUND
+Live migration moves a running virtual machine between physical hosts without stopping it. Two mechanisms exist. Pre-copy transfers memory pages iteratively while the machine continues to run, then briefly pauses it to transfer the remainder. Post-copy pauses the machine first, transfers minimal state, resumes it on the destination and fetches pages on demand. Hypervisors almost universally default to pre-copy.
+PROBLEM STATEMENT
+Pre-copy converges only if the network transfer rate exceeds the rate at which the guest dirties memory pages. For write-intensive workloads this condition fails, and the migration iterates repeatedly without progress until a forced cut-over produces a long service interruption. Post-copy does not suffer this failure mode but risks degraded performance from remote page faults. No mechanism currently exists in mainstream hypervisors to select between the two based on the observed behaviour of the guest, so operators either accept the default or choose manually by intuition.
+OBJECTIVES
+O1.  To quantify the relationship between guest memory-write intensity and the convergence behaviour of pre-copy migration.
+O2.  To identify measurable indicators, available to the hypervisor before migration begins, that predict pre-copy failure.
+O3.  To design and implement a decision rule that selects pre-copy, post-copy or a hybrid strategy for a given virtual machine.
+O4.  To evaluate the decision rule against the hypervisor default across a range of workload write intensities.
+SCOPE OF WORK
+1.  Configure a two-node KVM/QEMU testbed with shared or replicated storage; two modest VMs or two laptops are sufficient.
+2.  Generate guest workloads of controlled memory-write intensity using a memory stressor such as stress-ng.
+3.  Instrument the dirty-page rate through the QEMU migration statistics interface.
+4.  Train or hand-derive a classifier mapping dirty-page rate and available bandwidth to a migration strategy.
+5.  Execute migrations under both the default and the proposed policy across the full write-intensity sweep.
+BASELINE FOR COMPARISON
+QEMU default pre-copy migration with auto-converge enabled, which is what a production deployment would use without intervention.
+EVALUATION METRICS
+Total migration time; service downtime during cut-over; total pages transferred; number of pre-copy iterations; application-level throughput degradation during migration.
+DATASETS AND TOOLS
+KVM/QEMU with libvirt, stress-ng, the QEMU migration monitor, Python for analysis.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+The two migration mechanisms are individually well studied; the automated selection between them, validated against a systematic write-intensity sweep with a stated decision boundary, is the novel element. The identification of the exact dirty-page rate at which pre-copy ceases to be the correct choice is a concrete and citable result.
+P4  ·  Interference and Fairness Analysis of Fractional GPU Sharing for Multi-Tenant Inference
+BACKGROUND
+Graphics processing units are expensive and frequently underutilised by a single inference tenant. Several sharing mechanisms exist: time-slicing, in which the scheduler interleaves contexts; the Multi-Process Service, which allows concurrent kernel execution from multiple processes; and application-level sequential batching, in which requests from all tenants are merged. Cloud providers expose these mechanisms with little guidance on their behaviour.
+PROBLEM STATEMENT
+When multiple tenants share a single accelerator, the performance each observes depends on the behaviour of the others. The extent of this interference, and whether it is distributed fairly, is not documented for the common sharing mechanisms under mixed batch sizes. Consequently an operator cannot determine how many tenants may share a device before the latency guarantee offered to each becomes unachievable, nor which sharing mechanism degrades most gracefully.
+OBJECTIVES
+O1.  To measure the performance interference experienced by inference tenants sharing a single GPU under three distinct sharing mechanisms.
+O2.  To quantify the fairness of the resulting resource allocation using an accepted fairness index.
+O3.  To determine the tenant count at which each mechanism ceases to meet a stated latency target.
+O4.  To propose an admission-control rule that admits tenants only while the latency target remains satisfiable.
+SCOPE OF WORK
+1.  Deploy an inference server hosting two to six concurrent tenants on a single consumer GPU; Google Colab or Kaggle free tiers are adequate.
+2.  Configure the three sharing mechanisms in turn without altering the workload.
+3.  Vary the batch size and arrival rate independently for each tenant to create heterogeneous conditions.
+4.  Record per-tenant latency and throughput throughout.
+5.  Derive and validate the admission-control rule on a held-out set of tenant mixes.
+BASELINE FOR COMPARISON
+Exclusive single-tenant allocation of the whole device, which gives the interference-free reference for each tenant.
+EVALUATION METRICS
+Aggregate throughput; per-tenant 99th percentile latency; Jain's fairness index across tenants; slowdown relative to exclusive execution; the maximum tenant count satisfying the latency target.
+DATASETS AND TOOLS
+NVIDIA MPS, CUDA time-slicing, Triton Inference Server or a custom server, PyTorch or ONNX Runtime, a single consumer or cloud GPU.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Interference-aware admission control for fractional GPU sharing is discussed conceptually but rarely measured. Establishing the point at which sharing stops paying, expressed as a rule that can be applied by an operator, is a practical and publishable contribution.
+P5  ·  Egress-Aware Cost-Optimal Placement of Workloads Across Multiple Public Cloud Providers
+BACKGROUND
+Organisations increasingly distribute workloads across more than one public cloud provider to avoid lock-in, exploit price differences and satisfy availability requirements. Each provider publishes a large and frequently changing price list covering compute instances, storage and network transfer.
+PROBLEM STATEMENT
+Selecting the cheapest instance for each component independently does not minimise total cost, because moving data between providers and between regions incurs egress charges that can exceed the compute saving. The placement problem is therefore coupled: the cost of placing one component depends on where the components that communicate with it have been placed. Existing tooling and much of the published work treats placement as a per-component selection and consequently produces solutions that appear cheap but are not.
+OBJECTIVES
+O1.  To build a unified cost model spanning compute, storage and inter-provider network transfer for at least three public cloud providers using published pricing data.
+O2.  To formulate multi-component workload placement as an optimisation problem in which egress cost between communicating components is represented explicitly.
+O3.  To solve the formulation exactly for small instances and heuristically for larger ones, and to quantify the optimality gap of the heuristic.
+O4.  To measure the total cost penalty incurred by placement approaches that ignore egress.
+SCOPE OF WORK
+1.  Retrieve pricing from the AWS Price List API, the GCP Cloud Billing Catalog API and the Azure Retail Prices API, all of which are public and free to query.
+2.  Define a set of representative multi-component applications, for example a three-tier web application and a data-processing pipeline, with stated inter-component traffic volumes.
+3.  Implement the integer linear programming formulation using an open solver such as PuLP with CBC.
+4.  Implement a greedy heuristic and a simulated-annealing heuristic for comparison.
+5.  Scale the number of components and candidate regions to establish where exact solution becomes infeasible.
+BASELINE FOR COMPARISON
+Cheapest-per-vCPU greedy selection performed independently per component, and single-provider placement, which together represent current common practice.
+EVALUATION METRICS
+Total monthly cost; the proportion of cost attributable to egress; optimality gap of the heuristic relative to the exact solution; solver runtime as a function of problem size.
+DATASETS AND TOOLS
+Public pricing APIs of AWS, GCP and Azure; Python with PuLP or OR-Tools; no paid cloud account is required since only pricing data is consulted.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+The demonstration that egress cost inverts the placement decision, quantified across realistic application topologies, is the contribution. It is a result that practitioners can act upon and that reviewers can verify from public pricing data.
+P6  ·  Hazard-Rate-Adaptive Checkpointing for Long-Running Jobs on Interruptible Cloud Instances
+BACKGROUND
+Cloud providers sell surplus capacity at a substantial discount as spot or preemptible instances, which may be reclaimed at short notice. Long-running jobs on such instances protect themselves by checkpointing state periodically. Checkpointing too often wastes compute on saving state; checkpointing too rarely wastes compute on repeating work after an interruption.
+PROBLEM STATEMENT
+The standard checkpoint-interval formula, due to Young and refined by Daly, is derived under the assumption that failures follow an exponential distribution with a constant rate. Spot interruptions do not satisfy this assumption: the interruption hazard varies with instance type, availability zone, time of day and market conditions. Applying a constant-rate formula to a time-varying hazard therefore yields an interval that is systematically wrong, but the size and direction of that error have not been established.
+OBJECTIVES
+O1.  To characterise the interruption hazard of spot capacity as a function of instance type, availability zone and time, using published provider data.
+O2.  To determine the extent to which the constant-rate assumption underlying the Daly formula is violated in practice.
+O3.  To derive a checkpoint interval that adapts to the estimated instantaneous hazard rate.
+O4.  To evaluate the adaptive interval against the fixed Daly interval in terms of effective job completion time and wasted compute.
+SCOPE OF WORK
+1.  Collect AWS Spot price history and Spot placement scores, or the equivalent GCP preemptible statistics, over several weeks and across several instance families.
+2.  Fit a time-varying hazard model to the observed interruption behaviour.
+3.  Implement a checkpointing wrapper around a representative long-running job such as model training or a scientific simulation.
+4.  Simulate interruptions drawn from the fitted hazard model, since deliberately provoking real interruptions is neither reliable nor economical.
+5.  Compare the fixed and adaptive policies across low, moderate and high interruption regimes.
+BASELINE FOR COMPARISON
+Fixed-interval checkpointing using the Young/Daly optimal interval computed from the mean interruption rate, which is the standard recommendation in the literature.
+EVALUATION METRICS
+Effective job completion time including all restarts; compute wasted on repeated work; compute spent on checkpointing; total monetary cost; sensitivity of each to the interruption regime.
+DATASETS AND TOOLS
+AWS Spot price history via the public API or published datasets, Python for hazard modelling and simulation, any checkpointable long-running workload.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+The mismatch between the exponential-failure assumption and observed spot behaviour is widely acknowledged informally but rarely quantified. Measuring the penalty of that assumption and offering a corrected interval is a well-defined and defensible contribution.
+P7  ·  Learned Tiering Policies for Cloud Object Storage Evaluated Against the Optimal Offline Policy
+BACKGROUND
+Cloud object storage is offered in tiers that trade storage price against retrieval price and retrieval latency. Moving an object to a colder tier reduces the monthly storage charge but introduces a cost and delay if the object is subsequently read. Providers offer rule-based lifecycle policies, typically expressed as a fixed number of days since last access, and automatic tiering services whose internal logic is not published.
+PROBLEM STATEMENT
+Fixed day-count rules cannot distinguish an object that is genuinely finished with from one that is accessed sporadically but predictably. The consequence is either premature demotion, which incurs retrieval charges, or delayed demotion, which incurs storage charges. How much money is left on the table by fixed rules, and how much of that gap a learned policy can close, has not been established against a principled upper bound.
+OBJECTIVES
+O1.  To replay realistic access traces against a tiered object store and measure the cost incurred by fixed lifecycle rules.
+O2.  To compute the cost of the optimal offline policy, which has perfect knowledge of future accesses, as an upper bound on achievable savings.
+O3.  To develop a learned tiering policy using access-pattern features available at decision time.
+O4.  To express the performance of the learned policy as the fraction of the gap to the optimal policy that it closes.
+SCOPE OF WORK
+1.  Deploy MinIO locally with simulated hot, warm and cold tiers whose cost and latency parameters follow published cloud pricing.
+2.  Replay the MSR Cambridge block traces and the IBM object store traces against the deployment.
+3.  Implement the fixed thirty-day and ninety-day lifecycle rules and a least-recently-used policy.
+4.  Compute the optimal offline schedule using dynamic programming over the known trace.
+5.  Train and evaluate the learned policy using recency, access frequency, object size and inter-access interval features.
+BASELINE FOR COMPARISON
+Least-recently-used demotion, static thirty-day and ninety-day lifecycle rules, and the optimal offline policy as the upper bound.
+EVALUATION METRICS
+Total monthly cost; retrieval latency penalty incurred; number of premature demotions; the fraction of the gap between the fixed rule and the optimal policy that is closed.
+DATASETS AND TOOLS
+MinIO, MSR Cambridge block traces, IBM object store traces, Python with scikit-learn or XGBoost.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Framing the result as a fraction of the achievable gap, rather than as a raw percentage saving, is what distinguishes this from routine applied machine learning. It also makes the paper publishable when the learned policy performs modestly, since a small gap to optimal is itself an informative finding.
+P8  ·  Managed Versus Self-Hosted Database Services Under Bursty Load: A Tail-Latency and Cost-of-Ownership Study
+BACKGROUND
+A team deploying a relational database in the cloud must choose between a managed service such as Amazon RDS or Google Cloud SQL and a self-managed instance running in a container or virtual machine. Managed services carry a price premium justified by reduced administrative effort, automated backup and automated failover.
+PROBLEM STATEMENT
+Comparisons between the two options are usually conducted at steady state and report average throughput, under which conditions the self-managed option generally appears superior on price. Real workloads, however, are bursty, and the behaviour that matters is how each option responds when load rises sharply and how quickly it recovers afterwards. That behaviour is not documented, and neither is the administrative time cost that would need to be included for a fair comparison.
+OBJECTIVES
+O1.  To construct a workload with a realistic diurnal shape and superimposed bursts, rather than a constant request rate.
+O2.  To measure the tail-latency behaviour and recovery time of managed and self-managed deployments under that workload.
+O3.  To record the administrative effort required to configure, secure, back up and recover each deployment.
+O4.  To assemble a three-year total cost of ownership model incorporating both infrastructure charges and administrative time, and to identify the conditions under which each option is preferable.
+SCOPE OF WORK
+1.  Deploy PostgreSQL both on a managed free-tier service and in a container on a comparably sized virtual machine.
+2.  Drive both with the same YCSB or sysbench workload shaped to a diurnal pattern with bursts.
+3.  Deliberately induce a failure in each deployment and measure recovery.
+4.  Log the wall-clock time spent by the team on administrative tasks throughout the project.
+5.  Build the cost model with administrative time as an explicit and varied parameter.
+BASELINE FOR COMPARISON
+The conventional steady-state throughput comparison, reproduced first, so that the divergence introduced by bursty conditions can be shown directly.
+EVALUATION METRICS
+99th percentile latency during and after bursts; time to return to baseline latency; failure recovery time; data loss on failure; three-year total cost of ownership as a function of the assumed hourly cost of administrative time.
+DATASETS AND TOOLS
+PostgreSQL, Docker, a managed database free tier, YCSB or sysbench, a spreadsheet or Python cost model.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+A decision-support study of this kind is valued when it makes its assumptions explicit and identifies the crossover conditions. The burst-recovery dimension and the inclusion of administrative time are the elements absent from vendor-published benchmarks.
+P9  ·  Comparative Resilience of the OpenStack and Kubernetes Control Planes Under Systematic Fault Injection
+BACKGROUND
+A private cloud is managed by a control plane that accepts requests, maintains desired state and reconciles the infrastructure against it. OpenStack and Kubernetes are the two dominant open control planes, differing substantially in architecture: OpenStack is a set of services coordinated through a message queue and a relational database, whereas Kubernetes is a set of controllers reconciling against a distributed key-value store.
+PROBLEM STATEMENT
+The resilience characteristics of these two architectures are described qualitatively in documentation but have not been compared under identical, systematically injected faults. An operator selecting a control plane therefore cannot determine how each behaves when its database slows, when a component is killed, or when the network partitions, nor whether operations that were in flight at the moment of failure are lost, duplicated or correctly completed.
+OBJECTIVES
+O1.  To define a fault taxonomy covering component failure, storage-layer degradation and network partition that can be applied identically to both control planes.
+O2.  To measure the time each control plane requires to detect and recover from each injected fault.
+O3.  To determine the fate of operations that were in flight when the fault occurred.
+O4.  To identify architectural causes for any observed differences in resilience.
+SCOPE OF WORK
+1.  Deploy DevStack in an all-in-one configuration and a k3s cluster, each on modest hardware.
+2.  Implement the fault-injection taxonomy using process termination, traffic control for latency injection, and firewall rules for partitioning.
+3.  Submit a continuous stream of provisioning operations so that faults always occur with work in flight.
+4.  Repeat each fault at least five times to capture variance in recovery behaviour.
+5.  Classify every in-flight operation as completed, lost, duplicated or left inconsistent.
+BASELINE FOR COMPARISON
+The recovery behaviour documented or advertised for each platform, against which the measured behaviour is compared; deviations between the two are themselves findings.
+EVALUATION METRICS
+Time to detect; time to recover; count of lost, duplicated and inconsistent operations; whether manual intervention was required; resource consumption during recovery.
+DATASETS AND TOOLS
+DevStack, k3s, Linux tc for network fault injection, iptables, a custom operation-submission harness.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Applying a single consistent fault taxonomy to two architecturally distinct control planes produces a comparison that does not presently exist. Chaos-engineering methodology papers of this form are accepted at systems and dependability workshops when the injection procedure is fully specified and reproducible.
+P10  ·  Risk-Quantified Virtual Machine Right-Sizing for Private Cloud Capacity Reclamation
+BACKGROUND
+Virtual machines in private clouds are commonly provisioned according to the peak demand anticipated at the time of request. Since actual demand is usually far below that peak, a substantial fraction of allocated capacity remains idle. Right-sizing is the practice of reducing allocations to match observed utilisation.
+PROBLEM STATEMENT
+Right-sizing recommendations are conventionally reported in terms of the capacity they reclaim. This presentation is incomplete and potentially misleading, because reducing an allocation increases the probability that the workload will encounter resource exhaustion during a future demand spike. The risk introduced by a given reclamation is not quantified, so an operator cannot judge whether a recommendation is safe and has no principled way to select an operating point.
+OBJECTIVES
+O1.  To analyse utilisation telemetry from real production virtual machines and characterise the gap between allocated and used capacity.
+O2.  To develop a right-sizing recommender that produces flavour recommendations from utilisation history.
+O3.  To model, for each recommendation, the probability that the resized machine will exhaust its resources within a defined future window.
+O4.  To present the outcome as a frontier relating reclaimed capacity to induced violation risk, allowing an operator to select an acceptable point.
+SCOPE OF WORK
+1.  Obtain the Bitbrains GWA-T-12 traces or the Azure virtual machine trace, both publicly available.
+2.  Partition each trace into an observation period and an evaluation period.
+3.  Generate recommendations from the observation period alone, without access to future data.
+4.  Replay the evaluation period against the recommended allocations and record every instance of resource exhaustion.
+5.  Repeat across several aggressiveness settings to trace the full frontier.
+BASELINE FOR COMPARISON
+Peak provisioning, which is current practice, and a simple 95th-percentile rule, which is the common heuristic recommendation.
+EVALUATION METRICS
+Reclaimed vCPU-hours and memory GB-hours; count and duration of resource-exhaustion events in the evaluation period; the frontier relating the two; the fraction of machines for which any recommendation is safe.
+DATASETS AND TOOLS
+Bitbrains GWA-T-12 traces, Azure public VM traces, Python with pandas and scikit-learn.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+The literature reports savings and is generally silent on the violations those savings caused. Producing the risk frontier, and stating plainly how much capacity can be reclaimed at zero induced risk, corrects a real reporting deficiency in this area.
+P11  ·  Policy-Driven Cloud Bursting from Private to Public Capacity Under Cost, Latency and Data-Residency Constraints
+BACKGROUND
+Organisations that operate a private cloud size it for typical rather than peak demand and rely on public cloud capacity to absorb overflow. This practice, known as cloud bursting, requires a controller that decides when to burst, how much capacity to acquire and which work to send outward.
+PROBLEM STATEMENT
+Bursting controllers in practice trigger on a single utilisation or queue-length threshold. Such a controller cannot honour the constraints that actually govern the decision in an institutional setting: a monthly expenditure ceiling that must not be exceeded, a latency requirement that some public regions cannot satisfy, and a legal or policy requirement that certain categories of data remain within a jurisdiction. A controller that ignores these constraints will produce decisions that are operationally correct but administratively or legally unacceptable.
+OBJECTIVES
+O1.  To design a bursting controller that admits cost, latency and data-residency constraints as explicit inputs rather than as post-hoc filters.
+O2.  To implement the controller against a private Kubernetes cluster with a public cloud node pool available for overflow.
+O3.  To evaluate service-level attainment achieved per unit of expenditure under varying burst intensity.
+O4.  To quantify the capacity and cost consequences of enforcing a data-residency constraint.
+SCOPE OF WORK
+1.  Deploy a local k3s cluster as the private capacity and configure a free-tier public cloud node that can join it.
+2.  Label workloads with data-classification tags that determine which destinations are permissible.
+3.  Implement the controller with a cost accumulator that halts bursting when the ceiling is reached.
+4.  Drive the system with a load pattern containing bursts of varying magnitude and duration.
+5.  Repeat the evaluation with the residency constraint enabled and disabled to isolate its effect.
+BASELINE FOR COMPARISON
+Threshold-only bursting without constraints, and a no-bursting configuration in which the private cluster absorbs or rejects all load.
+EVALUATION METRICS
+Service-level attainment; expenditure incurred; attainment per unit currency; requests rejected because no permissible destination existed; the attainment penalty attributable to the residency constraint.
+DATASETS AND TOOLS
+k3s, a public cloud free tier, Kubernetes custom controller in Go or Python, a load generator such as Locust.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Data residency is a live regulatory concern under the Digital Personal Data Protection Act 2023 and comparable regimes, yet it is almost never modelled as a first-class constraint in bursting research. Quantifying what compliance costs in attainment terms is both novel and directly relevant to Indian institutional deployments.
+P12  ·  Carbon-Aware Scheduling of Deferrable Cloud Workloads Under Indian Grid Conditions
+BACKGROUND
+The carbon intensity of electricity, measured in grams of carbon dioxide equivalent per kilowatt-hour, varies through the day as the generation mix changes. Deferrable computational work, such as batch training, backups and analytics, can be shifted in time or between regions to coincide with lower-carbon periods. Scheduling algorithms exploiting this variation have been proposed and evaluated, overwhelmingly against European and North American grid data.
+PROBLEM STATEMENT
+The Indian grid has a markedly different diurnal carbon-intensity profile from the grids on which existing carbon-aware schedulers were evaluated, owing to high daytime solar generation combined with a substantial coal baseload and an evening peak served by fossil generation. An algorithm tuned to a grid whose cleanest period is overnight will behave incorrectly on a grid whose cleanest period is midday. Whether and by how much published carbon-aware scheduling algorithms underperform under Indian grid conditions is unknown.
+OBJECTIVES
+O1.  To assemble and characterise a carbon-intensity time series for one or more Indian regional grids and contrast its diurnal structure with a European reference grid.
+O2.  To implement at least two published carbon-aware scheduling algorithms without modification.
+O3.  To evaluate those algorithms against both grid profiles and quantify any degradation under Indian conditions.
+O4.  To propose and evaluate an adaptation that accounts for the observed profile difference.
+SCOPE OF WORK
+1.  Obtain carbon-intensity data from the UK Carbon Intensity API and the ElectricityMaps free tier for the reference grid, and derive an Indian series from Grid-India or POSOCO generation-mix reports.
+2.  Extend CloudSim with a carbon-accounting layer, or alternatively implement a Kubernetes scheduler plugin.
+3.  Define a workload mixture containing both deferrable and latency-sensitive jobs with stated deadlines.
+4.  Run each algorithm against each grid profile over an identical simulated period.
+5.  Implement and evaluate the proposed adaptation.
+BASELINE FOR COMPARISON
+Carbon-agnostic first-come-first-served scheduling, a fixed overnight-shifting heuristic, and the unmodified published algorithms.
+EVALUATION METRICS
+Grams of carbon dioxide equivalent emitted; mean and 95th percentile job delay; deadline violations; the carbon saving forgone by applying an unadapted algorithm to the Indian profile.
+DATASETS AND TOOLS
+CloudSim or a Kubernetes scheduler plugin, UK Carbon Intensity API, ElectricityMaps free tier, Grid-India or POSOCO published generation data.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Demonstrating that a published algorithm transfers poorly to a differently structured grid, and diagnosing why, is a legitimate contribution that does not require inventing a new algorithm. It is also directly relevant to Indian data-centre operators and is likely to be well received at regional venues.
+P13  ·  Reinforcement-Learning Autoscaling Evaluated Against Production Controllers Including Its Own Training Cost
+BACKGROUND
+Autoscaling adjusts the number of replicas serving an application in response to load. The Kubernetes Horizontal Pod Autoscaler reacts to a utilisation metric crossing a target, and KEDA extends this to event-source metrics such as queue depth. Both are reactive and can oscillate or respond too slowly to sharp load changes. Reinforcement learning has been proposed repeatedly as an alternative.
+PROBLEM STATEMENT
+Published reinforcement-learning autoscalers report improved service-level attainment against the Horizontal Pod Autoscaler, but they typically omit two costs that determine whether the approach is deployable: the compute and time required to train the agent, and the behaviour of the agent during the period before it has learned an adequate policy. An operator cannot evaluate the claimed benefit without these figures, and the omission is sufficiently widespread that reviewers routinely raise it.
+OBJECTIVES
+O1.  To implement a reinforcement-learning autoscaler and evaluate it against the Horizontal Pod Autoscaler and KEDA on identical workloads.
+O2.  To measure the training cost of the agent in compute hours and wall-clock time.
+O3.  To characterise the behaviour of the agent during its early deployment period, before convergence.
+O4.  To determine the workload duration over which the benefit of the agent exceeds its training cost.
+SCOPE OF WORK
+1.  Deploy a microservice benchmark such as Google Online Boutique or a DeathStarBench application on k3s.
+2.  Replay a realistic request trace, for example derived from Wikipedia or NASA HTTP logs, shaped to include both diurnal variation and sudden spikes.
+3.  Configure the Horizontal Pod Autoscaler at a conventional target and configure KEDA on queue depth.
+4.  Train a PPO or DQN agent in a simulated environment, then deploy it against the live cluster.
+5.  Record agent behaviour from first deployment, not merely after convergence.
+BASELINE FOR COMPARISON
+The Horizontal Pod Autoscaler at a CPU utilisation target of 50 percent, and KEDA with queue-based scaling.
+EVALUATION METRICS
+Service-level violations; over-provisioned pod-minutes; scaling oscillation count; agent training compute and wall-clock hours; violations incurred during the pre-convergence period; the break-even workload duration.
+DATASETS AND TOOLS
+k3s, Google Online Boutique or DeathStarBench, KEDA, Stable-Baselines3 or Ray RLlib, Locust, Prometheus.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Reporting training cost and pre-convergence behaviour is precisely the element missing from comparable work. A paper that includes an honest break-even analysis is more likely to be accepted than one claiming a larger but incompletely costed improvement.
+P14  ·  Risk-Ranked Detection and Remediation of Configuration Drift in Infrastructure as Code
+BACKGROUND
+Infrastructure as code tools such as Terraform maintain a state file describing the resources they manage. Configuration drift occurs when the live infrastructure diverges from that state, typically through manual changes made during an incident, changes applied by another tool, or changes made automatically by the cloud provider.
+PROBLEM STATEMENT
+Existing tooling can detect drift and enumerate it, but presents every divergence with equal weight. A production environment of realistic size produces hundreds of drift items, the majority of which are inconsequential, and engineering teams consequently stop reading the output. The genuinely dangerous item, such as a security group that has been opened for a debugging session and never closed, is lost among tag changes and timestamp differences. The open problem is not detection but prioritisation.
+OBJECTIVES
+O1.  To construct a labelled corpus of infrastructure drift covering security, cost and availability impacts alongside inconsequential changes.
+O2.  To implement drift detection between declared state and live infrastructure.
+O3.  To develop a classifier that assigns an impact category and severity to each detected drift item.
+O4.  To evaluate ranking quality against manual expert labelling and to generate corresponding remediation plans.
+SCOPE OF WORK
+1.  Define a representative Terraform configuration covering compute, network, storage and identity resources.
+2.  Inject drift systematically across all four resource categories, spanning both dangerous and harmless changes.
+3.  Implement detection and classification, using resource type, changed attribute and blast-radius reasoning as features.
+4.  Have the drift corpus labelled independently by at least two people and measure inter-rater agreement.
+5.  Evaluate ranking precision at the top of the list, since that is what an engineer will actually read.
+BASELINE FOR COMPARISON
+The unranked terraform plan diff, which detects drift correctly but provides no ordering, together with a random ordering as a lower bound.
+EVALUATION METRICS
+Drift detection accuracy on injected changes; precision at the top five and top ten ranked items; mean rank of the most dangerous injected item; inter-rater agreement on the labels; correctness of generated remediation plans.
+DATASETS AND TOOLS
+Terraform, LocalStack or a cloud free tier, Python, Open Policy Agent for the deterministic rules.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Framing the problem as ranking under alert fatigue rather than as detection distinguishes this from existing open-source tooling. Precision at the top of the list is the metric that reflects real operational use, and reporting it is the substance of the contribution.
+P15  ·  Cost Attribution and Anomaly Detection for Multi-Tenant Kubernetes Clusters
+BACKGROUND
+Organisations frequently run a single Kubernetes cluster shared by several teams, with each team occupying one or more namespaces. The cloud provider bills for the underlying nodes and does not decompose that charge by namespace. Practices for allocating shared infrastructure cost to consuming teams are collectively referred to as FinOps.
+PROBLEM STATEMENT
+Attributing shared-cluster cost to tenants is genuinely difficult because resources are requested but not necessarily used, because burstable workloads consume beyond their requests, and because cluster-wide components such as ingress controllers and monitoring serve every tenant. In addition, cost incidents such as a runaway job or a misconfigured replica count are typically discovered only when the monthly invoice arrives, by which point the expenditure is irrecoverable. Detection latency, rather than detection accuracy, is the operative problem.
+OBJECTIVES
+O1.  To develop a cost-attribution method that apportions node cost to namespaces from resource requests, actual usage and shared-component overhead.
+O2.  To validate the attribution by confirming that apportioned costs reconcile to the total infrastructure charge.
+O3.  To implement near-real-time detection of anomalous cost trajectories at namespace granularity.
+O4.  To measure detection latency and false-alarm rate against injected cost incidents.
+SCOPE OF WORK
+1.  Deploy a multi-namespace k3s cluster with tenants exhibiting differing workload profiles.
+2.  Collect resource request and usage metrics through Prometheus and apply a published node price to derive cost.
+3.  Implement several attribution schemes, including request-based, usage-based and a hybrid, and compare their fairness.
+4.  Inject cost incidents such as a runaway job, an over-replicated deployment and a memory leak.
+5.  Evaluate detection against static threshold alerting.
+BASELINE FOR COMPARISON
+Static threshold alerting on aggregate spend and month-over-month comparison, which reflect current common practice.
+EVALUATION METRICS
+Attribution reconciliation error against total cost; detection latency per incident type; expenditure incurred before detection; false alarms per tenant per week.
+DATASETS AND TOOLS
+k3s, Prometheus, Grafana, OpenCost or Kubecost as a reference implementation, Python for the detection logic.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+FinOps receives far less academic attention than its industrial significance warrants. Attribution under burstable and shared resources is genuinely unsolved, and reporting detection latency alongside accuracy reflects how the problem actually presents in operation.
+P16  ·  Grounded Hybrid Detection of Infrastructure-as-Code Misconfigurations Using Policy Rules and a Language Model
+BACKGROUND
+Cloud security incidents frequently originate in misconfiguration rather than in software vulnerability: a storage bucket left publicly readable, an over-permissive identity policy, an unencrypted volume. Static analysers such as Checkov, tfsec and KICS detect misconfigurations by matching hand-written rules against infrastructure-as-code files.
+PROBLEM STATEMENT
+Rule engines achieve high precision on the patterns they encode but cannot detect misconfigurations that depend on context spanning several resources or on organisational policy not expressible as a simple pattern. Large language models can reason about such context, but they also produce findings that are fluent, plausible and false, which is unacceptable in a security tool because each false finding consumes reviewer attention and erodes trust in the whole output. The problem is therefore to obtain the contextual reasoning capability without accepting the fabrication that accompanies it.
+OBJECTIVES
+O1.  To construct a labelled corpus of infrastructure-as-code files containing both pattern-matchable and context-dependent misconfigurations.
+O2.  To establish the recall ceiling of existing rule engines on that corpus, identifying specifically what they cannot detect.
+O3.  To design a hybrid pipeline in which deterministic checks are handled by policy rules and contextual checks by a quantised open-weight language model, with every model-produced finding required to cite a supporting clause from a provided policy document and rejected if no such clause supports it.
+O4.  To measure the hallucination rate of the pipeline, defined as the proportion of reported findings that cannot be substantiated, and to quantify the reduction achieved by the grounding mechanism.
+SCOPE OF WORK
+1.  Assemble Terraform configurations from public repositories and inject a controlled set of misconfigurations spanning both categories.
+2.  Run Checkov and tfsec to establish baseline detection and to identify the residual undetected set.
+3.  Author the deterministic checks in Rego for Open Policy Agent.
+4.  Deploy a quantised open-weight model locally and require it to emit, with each finding, the policy clause on which the finding rests.
+5.  Implement a verification stage that discards any finding whose cited clause does not support it, and measure the pipeline with the verification stage enabled and disabled.
+BASELINE FOR COMPARISON
+Checkov and tfsec applied independently, and the language model applied without the grounding and rejection mechanism, which isolates the contribution of that mechanism.
+EVALUATION METRICS
+Precision and recall against the labelled corpus; hallucination rate before and after grounding; recall gain on the context-dependent subset specifically; end-to-end analysis latency per repository.
+DATASETS AND TOOLS
+Terraform, Checkov, tfsec, Open Policy Agent with Rego, a quantised open-weight model served through Ollama or llama.cpp on a local GPU.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+The grounding-and-rejection mechanism, evaluated by the reduction in hallucination rate that it produces, is the contribution rather than the application of a language model to security analysis. This is the strongest publication candidate in the set and the one whose framing generalises beyond cloud configuration.
+P17  ·  Graph-Based Enumeration of Privilege-Escalation Paths in Kubernetes Access Control Configurations
+BACKGROUND
+Kubernetes governs access through role-based access control, in which roles carrying permissions are bound to subjects such as users and service accounts. Applications run as pods that mount service-account tokens, so a compromised application inherits whatever permissions its service account holds.
+PROBLEM STATEMENT
+Access review is normally conducted one permission at a time, asking whether a given subject may perform a given action. This method cannot reveal escalation achieved through a sequence of individually reasonable permissions, for instance where a service account may create a pod, that pod may mount a second and more privileged service account, and that second account may modify cluster-level roles. Each step appears acceptable in isolation while the composition confers cluster administrator access. Multi-hop escalation is understood in principle but is not automatically analysed for the application-supplied Helm charts that most clusters actually run.
+OBJECTIVES
+O1.  To construct a graph representation of a cluster in which subjects, roles, bindings and pod specifications appear as nodes and permissions as directed edges.
+O2.  To enumerate all paths in that graph terminating in cluster-administrator-equivalent privilege.
+O3.  To rank the enumerated paths by exploitability, accounting for path length and the difficulty of each step.
+O4.  To apply the analysis to real open-source Helm charts and report escalation paths that flat permission review does not surface.
+SCOPE OF WORK
+1.  Deploy a k3s cluster and extract its complete access-control configuration.
+2.  Model the escalation primitives, including pod creation, service-account token mounting, secret reading, role binding creation and privileged container escape.
+3.  Implement path enumeration over the graph, bounding path length to keep the search tractable.
+4.  Construct synthetic clusters with known planted escalation paths to validate that the analyser finds them.
+5.  Apply the analyser to at least ten widely used Helm charts installed with default values.
+BASELINE FOR COMPARISON
+Flat permission checking using kubectl auth can-i, and existing single-step access linting, which together represent standard review practice.
+EVALUATION METRICS
+Number of escalation paths found; number found that flat analysis misses; validation recall on planted paths; false-positive rate confirmed by manual verification; analysis runtime as cluster size grows.
+DATASETS AND TOOLS
+k3s, the Kubernetes API, NetworkX or a comparable graph library, public Helm charts from Artifact Hub.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Applying multi-hop escalation analysis to default-installed application charts, and reporting what is found in charts that are widely deployed, converts a known theoretical concern into concrete measured evidence.
+P18  ·  Reachability-Aware Prioritisation of Vulnerabilities in Container Images
+BACKGROUND
+Container images are scanned before deployment by tools such as Trivy and Grype, which compare the software bill of materials against vulnerability databases. A typical application image yields well over two hundred reported vulnerabilities, largely originating in transitively included operating-system and language-runtime packages.
+PROBLEM STATEMENT
+The great majority of reported vulnerabilities reside in code paths that the application never executes; a vulnerability in a package that is present but never invoked cannot be exploited through the application. Because scanners rank findings by severity score alone and cannot distinguish invoked from uninvoked code, teams face lists too long to act upon and consequently act on none of them. Reducing the list requires demoting unreachable vulnerabilities, but any such reduction risks demoting something genuinely exploitable, and that risk has not been measured.
+OBJECTIVES
+O1.  To determine, for each reported vulnerability in a container image, whether the affected code is reachable from the application entry point.
+O2.  To re-rank the vulnerability list by combining severity with reachability evidence.
+O3.  To quantify the reduction in the actionable list achieved by the re-ranking.
+O4.  To verify that no genuinely exploitable vulnerability is demoted, and to report the false-negative rate explicitly.
+SCOPE OF WORK
+1.  Select ten to fifteen real container images spanning Python, Node.js and Java applications.
+2.  Generate the software bill of materials and the vulnerability list using Syft and Trivy.
+3.  Establish reachability using static call-graph analysis where the language permits, supplemented by dynamic tracing of an exercised application.
+4.  Construct a ground-truth set by manually verifying reachability for a stratified sample of findings.
+5.  Report both the list reduction and the false-negative rate on the verified sample.
+BASELINE FOR COMPARISON
+Raw CVSS severity ordering as produced by the scanner, which is what teams currently receive.
+EVALUATION METRICS
+Reduction in the count of findings ranked as actionable; precision of the reachability determination; false-negative rate, being the proportion of exploitable vulnerabilities demoted; analysis time per image.
+DATASETS AND TOOLS
+Trivy, Grype, Syft, static analysis tooling appropriate to each language, strace or eBPF for dynamic tracing.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Alert fatigue is an accepted framing, but the safety analysis is what elevates this beyond a tool demonstration. A method that reduces the list by a large factor while demoting nothing exploitable is a strong result; discovering that safe reduction is smaller than hoped is equally publishable.
+P19  ·  Distinguishing Economic Denial of Sustainability Attacks from Legitimate Flash Crowds in Autoscaled Applications
+BACKGROUND
+An autoscaled cloud application responds to increased load by provisioning additional capacity, for which the operator is billed. An attacker who understands this can send requests calculated not to exhaust capacity but to provoke scaling, so that the harm inflicted is financial rather than a denial of service. This is termed economic denial of sustainability.
+PROBLEM STATEMENT
+Such attacks are constructed to remain below the traffic-volume thresholds on which denial-of-service defences trigger, so volumetric detection does not observe them. Detection must therefore rely on the cost and scaling behaviour that the traffic induces rather than on its volume. The difficulty is that a legitimate flash crowd, such as the traffic generated by a successful marketing campaign, produces an almost identical cost and scaling signature, and suppressing genuine users is a worse outcome than absorbing the attack. Separating the two is the unsolved problem.
+OBJECTIVES
+O1.  To construct both attack traffic and legitimate flash-crowd traffic that produce comparable cost and scaling signatures.
+O2.  To identify behavioural features that distinguish the two classes despite that similarity.
+O3.  To implement a detector using cost-per-request and scaling-behaviour features rather than traffic volume.
+O4.  To evaluate detection latency, cost incurred before detection, and the false-positive rate specifically on the flash-crowd class.
+SCOPE OF WORK
+1.  Deploy an autoscaled web application on k3s with a Horizontal Pod Autoscaler and a cost model attached to replica-minutes.
+2.  Generate attack traffic that targets expensive endpoints at low volume, for instance uncached search queries or large report generation.
+3.  Generate flash-crowd traffic reproducing the arrival pattern of a genuine viral event.
+4.  Implement and train the detector on features such as cost per request, endpoint diversity, session structure and request-to-conversion behaviour.
+5.  Evaluate with attack and flash crowd both present and interleaved, not merely in isolation.
+BASELINE FOR COMPARISON
+Rate limiting at a conventional threshold and volumetric anomaly detection, both of which are expected to miss the attack entirely; that expected failure is itself a reportable result.
+EVALUATION METRICS
+Detection latency; expenditure incurred before detection; true-positive rate on attacks; false-positive rate on flash crowds; the separability achieved between the two classes in feature space.
+DATASETS AND TOOLS
+k3s, a web application with endpoints of differing cost, Locust or k6 for traffic generation, Prometheus, scikit-learn.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Most work in this area evaluates attack detection without a legitimate flash-crowd class present, which makes the task substantially easier than it is in reality. Including the flash crowd as an explicit negative class is the methodological contribution and is exactly what a reviewer will look for.
+P20  ·  Insider-Threat Detection on Cloud Audit Logs at Operationally Realistic Alert Budgets
+BACKGROUND
+Cloud platforms record every control-plane action in an audit log, such as AWS CloudTrail, capturing the identity, action, resource and outcome. These logs are the principal evidence available for detecting misuse of legitimate credentials, whether by a malicious insider or by an attacker who has obtained valid access.
+PROBLEM STATEMENT
+Detection research in this area reports area-under-curve figures computed across the full range of operating points. A security team, however, operates at a single fixed point determined by how many alerts an analyst can examine in a day, which is a small number. A detector with an excellent curve may nonetheless be useless at ten alerts per day. Furthermore, an alert that identifies an event as anomalous without indicating which aspect of the behaviour deviated cannot be triaged and will be dismissed.
+OBJECTIVES
+O1.  To implement anomaly detection over cloud audit logs capturing deviation in identity behaviour, resource access and temporal pattern.
+O2.  To evaluate detection performance at fixed alert budgets that reflect real analyst capacity rather than across the full operating curve.
+O3.  To generate for each alert an explanation naming the specific behavioural deviation responsible.
+O4.  To assess whether those explanations are sufficient for a reviewer to triage the alert correctly.
+SCOPE OF WORK
+1.  Obtain the CERT Insider Threat dataset, release r4.2 or r6.2, and map its schema onto a cloud audit log structure.
+2.  Optionally supplement with synthetically generated CloudTrail events containing planted misuse scenarios.
+3.  Implement Isolation Forest and rule-based signature detection as the comparison baselines.
+4.  Implement the proposed detector with per-feature attribution driving the explanation.
+5.  Conduct a small triage exercise in which team members classify alerts using only the generated explanation, and measure their accuracy.
+BASELINE FOR COMPARISON
+Isolation Forest applied to the same features, and rule-based signatures of the kind implemented in commercial cloud threat-detection services.
+EVALUATION METRICS
+Detection rate at budgets of ten, fifty and one hundred alerts per day; precision at those budgets; mean time to detection within the event stream; accuracy of human triage using the explanation alone.
+DATASETS AND TOOLS
+CERT Insider Threat dataset r4.2 or r6.2, synthetic CloudTrail generators, Python with scikit-learn and SHAP.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Reporting at fixed alert budgets rather than as an area-under-curve figure aligns the evaluation with operational reality and frequently reverses the ranking of methods. Coupling this with an explanation-usability assessment produces a paper that addresses the deployment gap rather than the detection gap.
+P21  ·  Quantifying the Security and Latency Trade-off of Adaptive Zero-Trust Policy in a Service Mesh
+BACKGROUND
+The zero-trust model requires that no request be trusted on the basis of its network origin. In a microservice deployment this is realised through a service mesh that enforces mutual TLS between services and applies per-service authorisation policy. Every such control consumes processing time and adds latency to every request.
+PROBLEM STATEMENT
+Zero-trust controls are ordinarily applied uniformly and permanently, so their full latency cost is paid at all times although the elevated threat conditions justifying the strictest settings are intermittent. Adaptive policy, which tightens controls when anomalous conditions are observed and relaxes them otherwise, is frequently proposed as a remedy. It is rarely evaluated, because doing so requires measuring not only the latency saved but the exposure introduced during the interval between the onset of an attack and the tightening of policy. Without that exposure figure the trade-off cannot be assessed.
+OBJECTIVES
+O1.  To decompose and measure the latency and processing overhead attributable to each individual zero-trust control in a service mesh.
+O2.  To implement an adaptive policy controller that adjusts enforcement strictness in response to anomaly signals.
+O3.  To measure the exposure window, being the interval during which an attack proceeds under relaxed policy before tightening occurs.
+O4.  To present the trade-off between overhead saved and exposure incurred as an explicit curve rather than as a claim.
+SCOPE OF WORK
+1.  Deploy a microservice benchmark on k3s with Istio or Linkerd installed.
+2.  Measure latency with the mesh absent, with mutual TLS enabled, and with per-service authorisation additionally enabled, isolating each increment.
+3.  Implement the adaptive controller with a defined anomaly signal and a defined tightening action.
+4.  Introduce simulated attacks at randomised times and measure the interval until policy tightens.
+5.  Sweep the controller sensitivity to trace the full trade-off curve.
+BASELINE FOR COMPARISON
+Permanently strict mutual TLS with full authorisation enforcement, and a no-mesh configuration, which bound the trade-off at both ends.
+EVALUATION METRICS
+99th percentile latency; CPU and memory overhead of the sidecar proxies; exposure window duration; requests served under relaxed policy during an attack; the resulting overhead-versus-exposure curve.
+DATASETS AND TOOLS
+k3s, Istio or Linkerd, Google Online Boutique or a comparable microservice benchmark, Prometheus, a load generator.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Adaptive security is proposed considerably more often than it is measured. Producing an explicit exposure-versus-overhead curve allows an operator to make an informed choice and constitutes the substance of the paper.
+P22  ·  Difficulty-Aware Routing Between a Locally Hosted Quantised Model and a Hosted Cloud Language Model
+BACKGROUND
+Applications built on large language models may invoke a hosted commercial API, which offers high capability at a per-token charge, or a smaller open-weight model hosted locally, which is free at the margin but less capable. Many requests in a typical workload are simple enough that the smaller model answers them adequately.
+PROBLEM STATEMENT
+Sending every request to the hosted API is unnecessarily expensive, whereas sending every request to the local model degrades quality on the subset of requests that genuinely require greater capability. Routing between them requires predicting request difficulty before the answer is known, and any router is itself imperfect: it will occasionally retain locally a request that the small model handles badly. Whether the resulting saving justifies that quality loss, once the router’s own cost is included, has not been established.
+OBJECTIVES
+O1.  To implement a router that predicts, for each incoming request, whether the locally hosted model will answer it adequately.
+O2.  To implement a confidence-based escalation mechanism that forwards a request to the hosted model when the local answer appears unreliable.
+O3.  To measure the cost and accuracy of the routed system against all-local and all-cloud configurations.
+O4.  To account for the computational cost of the router itself and for the accuracy lost on requests wrongly retained locally.
+SCOPE OF WORK
+1.  Select a task with an objective correctness measure, such as question answering or classification, so that quality can be scored automatically.
+2.  Host a quantised open-weight model locally and configure access to a hosted API.
+3.  Implement the router using request features and, optionally, a small classifier trained on observed local-model success.
+4.  Implement escalation triggered by low confidence in the local answer.
+5.  Sweep the routing threshold to trace the cost-versus-accuracy frontier.
+BASELINE FOR COMPARISON
+All-cloud routing, which sets the accuracy ceiling and cost ceiling, and all-local routing, which sets the cost floor.
+EVALUATION METRICS
+Cost per thousand requests; task accuracy; escalation rate; router inference cost and latency; accuracy lost specifically on requests retained locally that the hosted model would have answered correctly.
+DATASETS AND TOOLS
+Ollama or llama.cpp with a quantised open-weight model, a hosted model API, a public question-answering or classification benchmark.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Comparable work reports the saving and omits the router’s own cost and the quality lost on misrouted requests. Including both produces a defensible frontier, and the honest accounting is what makes the result usable and citable.
+P23  ·  Behaviour of Federated Learning Across Cloud and Edge Under Genuine Client Heterogeneity
+BACKGROUND
+Federated learning trains a shared model across distributed clients without centralising their data. Each client trains locally and transmits model updates, which a coordinating server aggregates. The approach is attractive for cloud-edge deployments where data cannot be moved for reasons of volume, privacy or regulation.
+PROBLEM STATEMENT
+Published federated learning results are commonly obtained under conditions far more favourable than a real cloud-edge deployment: clients of similar computational capacity, similar network bandwidth, and data partitioned in a manner only mildly non-independent. Real edge fleets contain devices differing by an order of magnitude in capability, with intermittent connectivity and sharply skewed local data distributions. The degree to which published accuracy and convergence claims survive these conditions, and the point at which they cease to hold, is not documented.
+OBJECTIVES
+O1.  To reproduce a published federated learning result under the favourable conditions in which it was reported.
+O2.  To introduce compute, network and data heterogeneity in controlled and independently variable degrees.
+O3.  To identify the level of heterogeneity at which the reproduced result ceases to hold.
+O4.  To evaluate whether aggregation strategies designed for heterogeneity recover the lost performance, and at what cost.
+SCOPE OF WORK
+1.  Deploy a federated setup using Flower or FedML across containers with explicitly constrained CPU and memory allocations.
+2.  Apply network constraints using Linux traffic control to emulate edge connectivity.
+3.  Partition the dataset using a Dirichlet distribution with a tunable concentration parameter to control the degree of non-independence.
+4.  Reproduce the baseline result first, before introducing any heterogeneity.
+5.  Vary each heterogeneity dimension independently to determine which one dominates the degradation.
+BASELINE FOR COMPARISON
+FedAvg under independent and identically distributed clients of equal capability, being the condition under which most published results are actually obtained.
+EVALUATION METRICS
+Final model accuracy; communication rounds to reach a target accuracy; wall-clock time to that target; client dropout rate; the heterogeneity level at which the baseline claim fails.
+DATASETS AND TOOLS
+Flower or FedML, Docker with resource constraints, Linux tc, CIFAR-10 or FEMNIST, PyTorch.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+A carefully conducted reproduction that establishes the breaking point of a published claim is a recognised and publishable contribution, particularly when the experimental conditions are fully specified. Identifying which dimension of heterogeneity dominates is additionally useful to practitioners.
+P24  ·  Information-Aware Adaptive Sampling and Backpressure in Cloud IoT Ingestion Pipelines
+BACKGROUND
+Internet-of-things deployments transmit sensor readings through a broker, typically over MQTT, to a stream processor and thence to cloud storage. When the aggregate publication rate exceeds downstream processing capacity, queues grow and the system must either buffer without limit, drop messages, or reduce the rate at which sensors publish.
+PROBLEM STATEMENT
+The usual responses to overload are to drop messages arbitrarily at the broker or to reduce every sensor to a uniformly lower fixed rate. Both discard information without regard to its value: a sensor whose reading is changing rapidly is treated identically to one that has been constant for an hour, although the former carries far more information. The consequence is that the signal reconstructed from the surviving data is degraded more than the reduction in message count would require.
+OBJECTIVES
+O1.  To quantify the reconstruction error incurred by conventional overload responses at a given reduction in ingested volume.
+O2.  To develop an adaptive sampling controller that allocates the available ingestion budget across sensors according to their current information content.
+O3.  To couple that controller to downstream queue depth so that sampling responds to actual congestion.
+O4.  To demonstrate improved signal fidelity per byte ingested relative to uniform reduction and arbitrary dropping.
+SCOPE OF WORK
+1.  Construct the pipeline using Mosquitto or EMQX, a stream processor, and object storage.
+2.  Drive it with a public sensor dataset replayed at controllable rates, or with simulated sensors exhibiting varied dynamics.
+3.  Implement uniform rate reduction and broker-level dropping as the comparison policies.
+4.  Implement the adaptive controller with an information measure such as change magnitude or predictive residual.
+5.  Reconstruct the original signal from ingested data in every configuration and compute the error.
+BASELINE FOR COMPARISON
+Fixed-rate publication with arbitrary dropping under overload, and uniform rate reduction across all sensors.
+EVALUATION METRICS
+Reconstruction error, for instance root-mean-square error against the full signal; messages ingested; end-to-end latency under overload; queue depth stability; fidelity achieved per byte ingested.
+DATASETS AND TOOLS
+Mosquitto or EMQX, Apache Flink or a lightweight Python consumer, MinIO or cloud object storage, a public sensor dataset such as Intel Lab Data.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Reframing the objective as signal fidelity per byte ingested, rather than as raw throughput or message count, is the conceptual contribution, and it is a reframing that transfers to other constrained ingestion settings.
+P25  ·  Cost and Latency Crossover Analysis of Serverless, Container and Managed Endpoint Machine Learning Inference
+BACKGROUND
+A model may be served in the cloud through a serverless function, a container running continuously on a virtual machine, or a managed inference endpoint. The three differ in how they charge: serverless per invocation and duration, containers per hour of allocated capacity regardless of use, and managed endpoints on a per-hour or per-request basis with an operational premium.
+PROBLEM STATEMENT
+Guidance on choosing between these options consists largely of general assertions, most commonly that serverless is preferable for sparse traffic and containers for sustained traffic. The request rate at which the preference actually reverses is not published and depends on model size, cold-start behaviour and the specific pricing in force. A practitioner therefore cannot determine which option is correct for a given workload without conducting the experiment independently.
+OBJECTIVES
+O1.  To serve an identical model through all three deployment modes under identical request patterns.
+O2.  To measure cost and latency across a wide sweep of request rates, from sparse to sustained.
+O3.  To identify the crossover request rate at which the least expensive option changes.
+O4.  To express the crossover as a parameterised cost model that a practitioner can apply using their own model size and prices.
+SCOPE OF WORK
+1.  Select a model of moderate size and package it identically for all three deployment modes.
+2.  Deploy to a serverless platform, a container on a small virtual machine, and a managed inference endpoint, using free tiers where available.
+3.  Sweep the request rate across at least six settings spanning several orders of magnitude.
+4.  Include cold-start latency in the serverless measurements rather than discarding initial invocations.
+5.  Derive the cost model and validate its predictions against the measured points.
+BASELINE FOR COMPARISON
+Always-on container serving, which represents the conventional default and provides the reference for both cost and latency.
+EVALUATION METRICS
+Cost per thousand inferences; 50th and 99th percentile latency; cold-start frequency and penalty; the crossover request rate; the predictive error of the derived cost model.
+DATASETS AND TOOLS
+AWS Lambda or Google Cloud Functions, Docker on a small virtual machine, a managed inference endpoint free tier, ONNX Runtime, a load generator.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+A crossover analysis supported by a parameterised and validated cost model is a well-cited form of contribution, because it remains useful after the specific prices measured have changed.
+P26  ·  Characterisation of WebAssembly Runtimes Against Container and MicroVM Runtimes for Edge Workloads
+BACKGROUND
+WebAssembly, originally designed for execution in web browsers, is increasingly proposed as a server-side and edge runtime. Its advocates cite very fast startup, small memory footprint and capability-based isolation as advantages over containers for workloads that are short-lived or run on constrained hardware.
+PROBLEM STATEMENT
+These advantages are asserted widely in industry material and reproduced in academic work, but the supporting measurement is thin and rarely covers workloads of substance. Critically, the conditions under which WebAssembly performs worse than a container are almost never reported, although any runtime with restricted system-call access and a maturing compilation toolchain must have such conditions. A practitioner considering the technology therefore has access to its advantages but not to its limitations.
+OBJECTIVES
+O1.  To measure startup latency, memory footprint and sustained throughput for identical workloads under WebAssembly, container and microVM runtimes.
+O2.  To identify workload classes in which WebAssembly performs worse than a container and to explain the cause.
+O3.  To compare the isolation properties of the three runtimes qualitatively against a stated threat model.
+O4.  To provide selection guidance stating explicitly when WebAssembly should not be chosen.
+SCOPE OF WORK
+1.  Select three workload classes: a short-lived request handler, a compute-intensive routine, and an input-output-intensive routine.
+2.  Compile each workload for WebAssembly and package the identical logic as a container image.
+3.  Execute under containerd, under WasmEdge or Wasmtime through runwasi, and under Firecracker.
+4.  Measure the full startup latency distribution rather than the mean alone, since tail behaviour governs edge responsiveness.
+5.  Document any workload that could not be compiled to WebAssembly, as such cases constitute findings in their own right.
+BASELINE FOR COMPARISON
+containerd, which is the established edge runtime and the incumbent that WebAssembly would have to displace.
+EVALUATION METRICS
+Startup latency distribution including tail percentiles; resident set size; sustained throughput; throughput degradation on input-output-intensive work specifically; count of workloads that could not be ported.
+DATASETS AND TOOLS
+containerd, WasmEdge or Wasmtime with runwasi, Firecracker, Rust or C compiled to the WASI target.
+EXPECTED CONTRIBUTION AND PUBLICATION RATIONALE
+Reporting the workload classes in which WebAssembly loses is what distinguishes a serious characterisation from promotional material, and it is the element reviewers will look for. The set of workloads that could not be ported at all is an additional and honest finding.
+ 
+5.  Spare Statements
+These are available if a team's environment proves unworkable, if an allocation clash arises, or for a repeat offering of the course. They are stated in outline; the full structure would be developed with the team on allocation.
+S1  ·  Data-Residency Compliance Checking for Multi-Region Cloud Deployments
+Context: The Digital Personal Data Protection Act 2023 and comparable regimes constrain where categories of personal data may be stored and processed. Cloud deployments described in Terraform or Kubernetes manifests specify regions, but nothing verifies those regions against the residency obligations attaching to the data the resources will hold.
+Objective: To parse infrastructure declarations, associate resources with data classifications, and flag configurations that place regulated data outside permitted jurisdictions; evaluated against manually audited deployments for precision and recall.
+S2  ·  Queue Latency and Fidelity Trade-off in Cloud-Hosted Quantum Circuit Execution
+Context: Quantum processors are accessed as a shared cloud service in which submitted circuits wait in a queue, sometimes for hours. A classical simulator returns results immediately but cannot reproduce hardware noise.
+Objective: To characterise, across a range of small circuits, the point at which the fidelity gained from real hardware justifies the queue delay incurred, using the IBM Quantum free tier and a local simulator as the two arms of the comparison.
+S3  ·  Overhead Characterisation of Confidential Computing for Cloud Inference
+Context: Confidential computing executes workloads inside a hardware-protected enclave so that the host operator cannot inspect memory contents. The protection is not free: memory encryption and enclave transitions add latency.
+Objective: To measure the latency, throughput and memory cost of running inference inside an enclave relative to conventional execution, and to determine the model sizes at which the overhead becomes prohibitive.
+S4  ·  Detecting Co-Location Interference from Guest-Visible Signals Alone
+Context: A tenant in a public cloud shares physical hardware with tenants it cannot observe. Performance variation caused by a noisy neighbour is indistinguishable, from inside the guest, from variation caused by the tenant’s own workload.
+Objective: To determine whether co-location interference can be detected using only signals available inside the guest, such as cache miss rates and timing variance, and to establish the detection accuracy achievable without hypervisor access.
+ 
+6.  Allocation and Calendar
+Week	Activity
+1–2	Statements released; teams formed (3 to 4 students); preference-based allocation with ties broken by lot
+3–4	Literature survey and testbed setup; baseline reproduction
+5	REVIEW 1 (10 marks)
+6–8	Implementation against objectives O1 and O2
+9	REVIEW 2 (10 marks)
+10–13	Remaining objectives, full evaluation and paper writing
+14	REVIEW 3 (10 marks) — demonstration and paper draft submission
+ 
+Conference targets for the strongest four to six teams: IEEE ICCCNT, IEEE CONECCT, IEEE ANTS, ACM COMPUTE, IEEE INDICON, and student tracks at IEEE CLOUD and IEEE CCGrid workshops. Springer LNNS and LNCS volumes attached to Indian conferences are also realistic. Teams should be told in Week 10 whether they are being considered, so that paper-quality writing starts early enough.
+7.  Module and Course Outcome Coverage
+Module	Projects
+M1  Introduction (deployment and service models)	Framing in P5, P11, P25
+M2  Virtualization	P1, P2, P3, P4
+M3  Public Cloud	P5, P6, P7, P8
+M4  Private Cloud / OpenStack	P9, P10, P11
+M5  Management, automation, resource management	P12, P13, P14, P15
+M6  Security principles	P16, P17, P18, P19, P20, P21
+M7  Application development, simulators, AI, IoT	P1, P12, P22, P23, P24, P25
+M8  Recent trends	P26, S1–S4
+ 
+Course Outcome	Projects providing evidence
+CO1  Design, develop and deploy a cloud application	P8, P11, P22, P24, P25
+CO2  Evaluate cloud services and deployment models	P5, P8, P9, P10, P25
+CO3  Apply cloud security concepts for application development	P16, P17, P18, P19, P20, P21
+CO4  Design and manage cloud services with simulation and platforms	P1, P6, P7, P12, P13, P14, P15
+CO5  Design and develop AI and IoT applications in the cloud	P22, P23, P24, P25
+ 
+CO3 and CO4 are the most heavily served, which is appropriate — they carry the highest cognitive level among the stated course outcomes and are the hardest to evidence through CAT and FAT alone.

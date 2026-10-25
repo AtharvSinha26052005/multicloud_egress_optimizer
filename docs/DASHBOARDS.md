@@ -49,6 +49,7 @@ After each option, press Enter to return to the menu.
 **What it does:** Runs all 6 algorithms on a topology you choose, then prints a comparison table.
 
 **Flow:**
+
 1. Shows list of 5 topologies with component count and edge count
 2. You type a number (1-5) to select one
 3. You type a traffic multiplier (e.g., 3.5) or press Enter for 1.0
@@ -57,6 +58,7 @@ After each option, press Enter to return to the menu.
 6. Gap analysis printed below: which algorithms are optimal, which overpay by how much %
 
 **Example output:**
+
 ```
 --- 3-Tier Web App (traffic x3.5) ---
 +---------------------+-----------+----------+---------+-----------+
@@ -83,12 +85,14 @@ Greedy: +$77.88/mo (+21.2%) WASTED
 **What it does:** Shows exactly which component goes to which cloud, for Greedy vs TEAP vs ILP side by side.
 
 **Flow:**
+
 1. Select topology
 2. Greedy, TEAP, and ILP all run on the baseline topology
 3. For each algorithm: print a table of (component name, description, assigned provider, compute cost)
 4. Show total compute and egress for each
 
 **Example output (CodeCourt):**
+
 ```
 --- Greedy (Total: $383.94) ---
 +------------------+------------------+--------+------------+
@@ -118,6 +122,7 @@ Compute: $370.30 | Egress: $1.80
 **What it does:** Slowly increases traffic from 0.5x to 10x and prints results in real-time with an ASCII bar chart showing the gap growing.
 
 **Flow:**
+
 1. Select topology (3-Tier Web App recommended)
 2. Algorithm runs Greedy and TEAP at each traffic level
 3. Prints one row every ~300ms — looks "live"
@@ -125,6 +130,7 @@ Compute: $370.30 | Egress: $1.80
 5. Marks rows where the gap crosses 15% with `<-- 15% threshold`
 
 **Example output:**
+
 ```
 Live Sweep: 3-Tier Web App
   Traffic      Greedy      TEAP    Savings    Gap%  Bar
@@ -148,12 +154,14 @@ Live Sweep: 3-Tier Web App
 **What it does:** Tests TEAP with each phase disabled, showing which phase causes the savings.
 
 **Flow:**
+
 1. Select topology and traffic multiplier (3.5x recommended)
 2. Runs 5 variants: Greedy baseline, TEAP-full, TEAP-no-clustering, TEAP-no-asymmetry, TEAP-no-ILP
 3. Prints a comparison table
 4. Identifies which phase has the biggest impact
 
 **Example output (Microservice Mesh at 3.5x):**
+
 ```
 --- Microservice Mesh ---
   Greedy (baseline)          -> $326.17 (compute=$317.77, egress=$8.40)
@@ -175,6 +183,7 @@ Live Sweep: 3-Tier Web App
 **What it does:** Prints the 3×3 egress rate matrix and a worked example with actual dollar amounts.
 
 **Output:**
+
 ```
 Egress Rates ($/GB) - Why Direction Matters
 
@@ -201,6 +210,7 @@ KEY INSIGHT (TEAP Phase 3):
 **What it does:** Runs the optimizer on the exact CodeCourt architecture and shows savings at baseline and 5x traffic.
 
 **Output:**
+
 ```
 CodeCourt Online Judge - Real-World Case Study
 Components: nginx, api_server, redis, judge_workers, postgres
@@ -239,6 +249,7 @@ SAVINGS: $11.84/mo (3.1%) = $142.08/year
 ## CLI Option [8] — Pricing Data Explorer
 
 **What it does:** Browse compute prices for any component type across all providers.
+
 1. Shows all available component types
 2. You select one
 3. Prints a table: provider, instance name, vCPU, RAM, price/month
@@ -251,6 +262,7 @@ SAVINGS: $11.84/mo (3.1%) = $142.08/year
 # Part 2 — Streamlit Web Dashboard (`streamlit_app.py`)
 
 The Streamlit dashboard is a browser-based interface that mirrors all CLI options but adds:
+
 - Real-time animated charts (not ASCII bars)
 - Interactive sliders and dropdowns
 - Embedded PNG figures from `results/figures/`
@@ -270,6 +282,7 @@ Navigation is via the left sidebar. Click any option to switch pages.
 **Mirrors:** CLI startup screen + README
 
 **Contents:**
+
 1. **Hero section** — Title, tagline, description
 2. **4 metric cards** — Key numbers (43.9% savings, 120 experiments, 6 algorithms, $948/year)
 3. **Review 1 Baseline Table** — The exact numbers from Review 1 in a styled dataframe
@@ -284,11 +297,13 @@ Navigation is via the left sidebar. Click any option to switch pages.
 **Mirrors:** CLI Option [1]
 
 **Interactive elements:**
+
 - Dropdown: select topology (5 options)
 - Slider: traffic multiplier (0.5 to 10.0, step 0.5)
 - Button: "▶ Run All Algorithms"
 
 **On click:**
+
 - Progress bar shows which algorithm is running
 - Results table with color highlighting (green rows = optimal, red = >10% gap)
 - 2-panel bar chart: compute costs and total costs side by side
@@ -303,6 +318,7 @@ Navigation is via the left sidebar. Click any option to switch pages.
 **Layout:** 3 equal columns showing Greedy, TEAP, ILP side by side.
 
 For each algorithm:
+
 - `st.metric` showing total cost with egress as delta
 - DataFrame showing component → provider → instance → cost
 - Color difference makes it immediately obvious where TEAP differs from Greedy
@@ -316,6 +332,7 @@ Also shows the **Traffic Matrix** in an expandable section.
 **Mirrors:** CLI Option [3] — but animated in the browser!
 
 **Flow:**
+
 1. Select topology and max traffic multiplier
 2. Click "▶ Run Live Sweep"
 3. Progress bar ticks through each multiplier
@@ -334,11 +351,13 @@ Also shows the **Traffic Matrix** in an expandable section.
 **Mirrors:** CLI Option [4]
 
 **Interactive elements:**
+
 - Dropdown: topology
 - Slider: traffic multiplier (recommended: 3.5x)
 - Button: "▶ Run Ablation Study"
 
 **Output:**
+
 - Results table
 - Bar chart: each TEAP variant as a colored bar
 - Dashed line showing the TEAP-Full cost as reference
@@ -351,6 +370,7 @@ Also shows the **Traffic Matrix** in an expandable section.
 **Mirrors:** CLI Option [5]
 
 **Contents:**
+
 1. Interactive dataframe showing the 3×3 egress rate table with a red gradient (darker = more expensive)
 2. The pre-generated heatmap PNG embedded (fig5_egress_heatmap.png)
 3. 3 metric cards: GCP=$0.120/GB, AWS=$0.090/GB, Azure=$0.087/GB
@@ -359,6 +379,7 @@ Also shows the **Traffic Matrix** in an expandable section.
 6. Success message showing savings of switching from GCP to Azure for that volume
 
 **The slider is the key feature:** Students can drag the slider and immediately see how much money changes. At 1000 GB/month:
+
 - GCP sends: $120/month
 - Azure sends: $87/month
 - Savings: $33/month (27%)
@@ -372,11 +393,13 @@ This makes the insight tangible and interactive.
 **Mirrors:** CLI Option [6]
 
 **Contents:**
+
 1. Architecture table: all 5 CodeCourt components with specs
 2. Expandable traffic matrix
 3. Button: "▶ Run Greedy vs TEAP Comparison"
 
 **On click:**
+
 - 2-column layout: Greedy placement (left) vs TEAP placement (right)
 - st.metric for compute, egress, total (with deltas showing egress penalty/savings)
 - Traffic level comparison table (1x, 2x, 3.5x, 5x)
@@ -390,6 +413,7 @@ This makes the insight tangible and interactive.
 **Mirrors:** CLI Option [8]
 
 **Contents:**
+
 1. Dropdown: select component type (10 options)
 2. 3 metric cards: cheapest and most expensive provider highlighted
 3. Styled dataframe with all provider prices for that type
@@ -403,11 +427,11 @@ The bar chart is the unique addition vs the CLI version — you can see at a gla
 
 For a 10-minute review presentation:
 
-| Time | Page/Option | What to say |
-|---|---|---|
-| 0-1 min | CLI Option [5] or Streamlit Page 6 | "The problem: egress is invisible but expensive. GCP charges $0.12/GB to send data." |
-| 1-3 min | Streamlit Page 1 (Overview) | "Here's the full dashboard. Four key numbers. Here are our pre-generated results." |
-| 3-5 min | Streamlit Page 7 (CodeCourt) | "This is our actual CodeCourt project. Greedy wastes $79/month at 5x traffic = $948/year." |
-| 5-7 min | Streamlit Page 4 (Live Sweep) | "Watch the gap grow as traffic increases. Crosses 15% at 2.5x." |
-| 7-9 min | Streamlit Page 2 (Algorithm Comparison) | "All 6 algorithms. TEAP matches the true optimal. Greedy overpays." |
-| 9-10 min | Streamlit Page 5 (Ablation) | "Proof that ILP refinement is the critical phase. Removing it causes +31.9% cost." |
+| Time     | Page/Option                             | What to say                                                                                |
+| -------- | --------------------------------------- | ------------------------------------------------------------------------------------------ |
+| 0-1 min  | CLI Option [5] or Streamlit Page 6      | "The problem: egress is invisible but expensive. GCP charges $0.12/GB to send data."       |
+| 1-3 min  | Streamlit Page 1 (Overview)             | "Here's the full dashboard. Four key numbers. Here are our pre-generated results."         |
+| 3-5 min  | Streamlit Page 7 (CodeCourt)            | "This is our actual CodeCourt project. Greedy wastes $79/month at 5x traffic = $948/year." |
+| 5-7 min  | Streamlit Page 4 (Live Sweep)           | "Watch the gap grow as traffic increases. Crosses 15% at 2.5x."                            |
+| 7-9 min  | Streamlit Page 2 (Algorithm Comparison) | "All 6 algorithms. TEAP matches the true optimal. Greedy overpays."                        |
+| 9-10 min | Streamlit Page 5 (Ablation)             | "Proof that ILP refinement is the critical phase. Removing it causes +31.9% cost."         |

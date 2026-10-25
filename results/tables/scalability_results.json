@@ -1,0 +1,101 @@
+[
+  {
+    "n_components": 3,
+    "avg_greedy_cost": 197.71,
+    "avg_teap_cost": 194.94,
+    "teap_savings_pct": 1.4,
+    "ilp_mean_rt_ms": 61.0,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 1.39,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 5,
+    "avg_greedy_cost": 322.36,
+    "avg_teap_cost": 317.11,
+    "teap_savings_pct": 1.63,
+    "ilp_mean_rt_ms": 57.33,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 34.54,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 8,
+    "avg_greedy_cost": 448.1,
+    "avg_teap_cost": 439.4,
+    "teap_savings_pct": 1.94,
+    "ilp_mean_rt_ms": 75.65,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 42.63,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 10,
+    "avg_greedy_cost": 713.89,
+    "avg_teap_cost": 690.4,
+    "teap_savings_pct": 3.29,
+    "ilp_mean_rt_ms": 80.04,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 39.95,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 12,
+    "avg_greedy_cost": 754.38,
+    "avg_teap_cost": 723.97,
+    "teap_savings_pct": 4.03,
+    "ilp_mean_rt_ms": 83.63,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 55.19,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 15,
+    "avg_greedy_cost": 928.78,
+    "avg_teap_cost": 889.26,
+    "teap_savings_pct": 4.26,
+    "ilp_mean_rt_ms": 94.65,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 52.08,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 18,
+    "avg_greedy_cost": 1223.19,
+    "avg_teap_cost": 1176.5,
+    "teap_savings_pct": 3.82,
+    "ilp_mean_rt_ms": 102.27,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 60.41,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 20,
+    "avg_greedy_cost": 1210.15,
+    "avg_teap_cost": 1173.22,
+    "teap_savings_pct": 3.05,
+    "ilp_mean_rt_ms": 111.71,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 54.81,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  },
+  {
+    "n_components": 25,
+    "avg_greedy_cost": 1514.56,
+    "avg_teap_cost": 1455.88,
+    "teap_savings_pct": 3.87,
+    "ilp_mean_rt_ms": 114.42,
+    "ilp_success_rate": 1.0,
+    "teap_mean_rt_ms": 61.96,
+    "teap_gap_pct": 0.0,
+    "timeout_s": 30.0
+  }
+]

@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    command: uvicorn src.tool.api:app --host 0.0.0.0 --port 8000
+    environment:
+      - PYTHONPATH=/app
+
+  dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    command: python -m streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - api

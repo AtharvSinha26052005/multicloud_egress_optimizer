@@ -1,121 +1,145 @@
 topology,num_components,traffic_multiplier,algorithm,compute_cost,egress_cost,total_cost,runtime_seconds
-3-Tier Web App,3,1.0,Greedy,279.54,24.87,304.41,2e-05
-3-Tier Web App,3,1.0,Single-Provider,284.5,1.2,285.7,5e-05
-3-Tier Web App,3,1.0,Exhaustive,284.5,1.2,285.7,0.000334
-3-Tier Web App,3,1.0,ILP,284.5,1.2,285.7,0.053642
-3-Tier Web App,3,1.0,Simulated Annealing,284.5,1.2,285.7,0.010679
-3-Tier Web App,3,1.0,TEAP,284.5,1.2,285.7,0.018147
-3-Tier Web App,3,2.0,Greedy,279.54,49.74,329.28,1.3e-05
-3-Tier Web App,3,2.0,Single-Provider,284.5,2.4,286.9,3.8e-05
-3-Tier Web App,3,2.0,Exhaustive,284.5,2.4,286.9,0.000276
-3-Tier Web App,3,2.0,ILP,284.5,2.4,286.9,0.051291
-3-Tier Web App,3,2.0,Simulated Annealing,284.5,2.4,286.9,0.007842
-3-Tier Web App,3,2.0,TEAP,284.5,2.4,286.9,0.000689
-3-Tier Web App,3,3.5,Greedy,279.54,87.05,366.58,1.1e-05
-3-Tier Web App,3,3.5,Single-Provider,284.5,4.2,288.7,4.5e-05
-3-Tier Web App,3,3.5,Exhaustive,284.5,4.2,288.7,0.000344
-3-Tier Web App,3,3.5,ILP,284.5,4.2,288.7,0.059576
-3-Tier Web App,3,3.5,Simulated Annealing,284.5,4.2,288.7,0.006778
-3-Tier Web App,3,3.5,TEAP,284.5,4.2,288.7,0.000595
-3-Tier Web App,3,5.0,Greedy,279.54,124.35,403.89,1.1e-05
-3-Tier Web App,3,5.0,Single-Provider,284.5,6.0,290.5,3.9e-05
-3-Tier Web App,3,5.0,Exhaustive,284.5,6.0,290.5,0.000313
-3-Tier Web App,3,5.0,ILP,284.5,6.0,290.5,0.041353
-3-Tier Web App,3,5.0,Simulated Annealing,284.5,6.0,290.5,0.019068
-3-Tier Web App,3,5.0,TEAP,284.5,6.0,290.5,0.000897
-Microservice Mesh,5,1.0,Greedy,317.77,2.4,320.17,1.4e-05
-Microservice Mesh,5,1.0,Single-Provider,317.77,2.4,320.17,3.8e-05
-Microservice Mesh,5,1.0,Exhaustive,317.77,2.4,320.17,0.003615
-Microservice Mesh,5,1.0,ILP,317.77,2.4,320.17,0.059574
-Microservice Mesh,5,1.0,Simulated Annealing,317.77,2.4,320.17,0.010721
-Microservice Mesh,5,1.0,TEAP,317.77,2.4,320.17,0.031203
-Microservice Mesh,5,2.0,Greedy,317.77,4.8,322.57,1.1e-05
-Microservice Mesh,5,2.0,Single-Provider,317.77,4.8,322.57,3.6e-05
-Microservice Mesh,5,2.0,Exhaustive,317.77,4.8,322.57,0.00234
-Microservice Mesh,5,2.0,ILP,317.77,4.8,322.57,0.048729
-Microservice Mesh,5,2.0,Simulated Annealing,317.77,4.8,322.57,0.009139
-Microservice Mesh,5,2.0,TEAP,317.77,4.8,322.57,0.036198
-Microservice Mesh,5,3.5,Greedy,317.77,8.4,326.17,1.9e-05
-Microservice Mesh,5,3.5,Single-Provider,317.77,8.4,326.17,4.8e-05
-Microservice Mesh,5,3.5,Exhaustive,317.77,8.4,326.17,0.002577
-Microservice Mesh,5,3.5,ILP,317.77,8.4,326.17,0.050085
-Microservice Mesh,5,3.5,Simulated Annealing,317.77,8.4,326.17,0.010955
-Microservice Mesh,5,3.5,TEAP,317.77,8.4,326.17,0.037143
-Microservice Mesh,5,5.0,Greedy,317.77,12.0,329.77,1.2e-05
-Microservice Mesh,5,5.0,Single-Provider,317.77,12.0,329.77,5.8e-05
-Microservice Mesh,5,5.0,Exhaustive,317.77,12.0,329.77,0.002115
-Microservice Mesh,5,5.0,ILP,317.77,12.0,329.77,0.050397
-Microservice Mesh,5,5.0,Simulated Annealing,317.77,12.0,329.77,0.012358
-Microservice Mesh,5,5.0,TEAP,317.77,12.0,329.77,0.030592
-Data Pipeline,4,1.0,Greedy,342.41,3.6,346.01,1.5e-05
-Data Pipeline,4,1.0,Single-Provider,342.41,3.6,346.01,4.2e-05
-Data Pipeline,4,1.0,Exhaustive,342.41,3.6,346.01,0.000746
-Data Pipeline,4,1.0,ILP,342.41,3.6,346.01,0.042427
-Data Pipeline,4,1.0,Simulated Annealing,342.41,3.6,346.01,0.008225
-Data Pipeline,4,1.0,TEAP,342.41,3.6,346.01,0.043822
-Data Pipeline,4,2.0,Greedy,342.41,7.2,349.61,9e-06
-Data Pipeline,4,2.0,Single-Provider,342.41,7.2,349.61,2.8e-05
-Data Pipeline,4,2.0,Exhaustive,342.41,7.2,349.61,0.0005
-Data Pipeline,4,2.0,ILP,342.41,7.2,349.61,0.039162
-Data Pipeline,4,2.0,Simulated Annealing,342.41,7.2,349.61,0.007523
-Data Pipeline,4,2.0,TEAP,342.41,7.2,349.61,0.036438
-Data Pipeline,4,3.5,Greedy,342.41,12.6,355.01,1.3e-05
-Data Pipeline,4,3.5,Single-Provider,342.41,12.6,355.01,0.00012
-Data Pipeline,4,3.5,Exhaustive,342.41,12.6,355.01,0.000687
-Data Pipeline,4,3.5,ILP,342.41,12.6,355.01,0.044307
-Data Pipeline,4,3.5,Simulated Annealing,342.41,12.6,355.01,0.010304
-Data Pipeline,4,3.5,TEAP,342.41,12.6,355.01,0.032606
-Data Pipeline,4,5.0,Greedy,342.41,18.0,360.41,1.1e-05
-Data Pipeline,4,5.0,Single-Provider,342.41,18.0,360.41,4.3e-05
-Data Pipeline,4,5.0,Exhaustive,342.41,18.0,360.41,0.000506
-Data Pipeline,4,5.0,ILP,342.41,18.0,360.41,0.048729
-Data Pipeline,4,5.0,Simulated Annealing,342.41,18.0,360.41,0.011302
-Data Pipeline,4,5.0,TEAP,342.41,18.0,360.41,0.023923
-ML Training,3,1.0,Greedy,440.39,0.6,440.99,1.3e-05
+3-Tier Web App,3,1.0,Greedy,279.54,24.87,304.41,2.3e-05
+3-Tier Web App,3,1.0,Single-Provider,284.5,1.2,285.7,6.5e-05
+3-Tier Web App,3,1.0,Exhaustive,284.5,1.2,285.7,0.000407
+3-Tier Web App,3,1.0,ILP,284.5,1.2,285.7,0.049404
+3-Tier Web App,3,1.0,Simulated Annealing,284.5,1.2,285.7,0.009934
+3-Tier Web App,3,1.0,TEAP,284.5,1.2,285.7,0.023183
+3-Tier Web App,3,2.0,Greedy,279.54,49.74,329.28,8e-06
+3-Tier Web App,3,2.0,Single-Provider,284.5,2.4,286.9,3.3e-05
+3-Tier Web App,3,2.0,Exhaustive,284.5,2.4,286.9,0.000336
+3-Tier Web App,3,2.0,ILP,284.5,2.4,286.9,0.044359
+3-Tier Web App,3,2.0,Simulated Annealing,284.5,2.4,286.9,0.00923
+3-Tier Web App,3,2.0,TEAP,284.5,2.4,286.9,0.000774
+3-Tier Web App,3,3.5,Greedy,279.54,87.05,366.58,7e-06
+3-Tier Web App,3,3.5,Single-Provider,284.5,4.2,288.7,3.2e-05
+3-Tier Web App,3,3.5,Exhaustive,284.5,4.2,288.7,0.000212
+3-Tier Web App,3,3.5,ILP,284.5,4.2,288.7,0.045861
+3-Tier Web App,3,3.5,Simulated Annealing,284.5,4.2,288.7,0.00865
+3-Tier Web App,3,3.5,TEAP,284.5,4.2,288.7,0.000954
+3-Tier Web App,3,5.0,Greedy,279.54,124.35,403.89,7e-06
+3-Tier Web App,3,5.0,Single-Provider,284.5,6.0,290.5,3.1e-05
+3-Tier Web App,3,5.0,Exhaustive,284.5,6.0,290.5,0.000219
+3-Tier Web App,3,5.0,ILP,284.5,6.0,290.5,0.043631
+3-Tier Web App,3,5.0,Simulated Annealing,284.5,6.0,290.5,0.008318
+3-Tier Web App,3,5.0,TEAP,284.5,6.0,290.5,0.000717
+Microservice Mesh,5,1.0,Greedy,317.77,2.4,320.17,1.2e-05
+Microservice Mesh,5,1.0,Single-Provider,317.77,2.4,320.17,4.5e-05
+Microservice Mesh,5,1.0,Exhaustive,317.77,2.4,320.17,0.003168
+Microservice Mesh,5,1.0,ILP,317.77,2.4,320.17,0.065735
+Microservice Mesh,5,1.0,Simulated Annealing,317.77,2.4,320.17,0.014402
+Microservice Mesh,5,1.0,TEAP,317.77,2.4,320.17,0.03162
+Microservice Mesh,5,2.0,Greedy,317.77,4.8,322.57,1e-05
+Microservice Mesh,5,2.0,Single-Provider,317.77,4.8,322.57,4.6e-05
+Microservice Mesh,5,2.0,Exhaustive,317.77,4.8,322.57,0.002835
+Microservice Mesh,5,2.0,ILP,317.77,4.8,322.57,0.058889
+Microservice Mesh,5,2.0,Simulated Annealing,317.77,4.8,322.57,0.013961
+Microservice Mesh,5,2.0,TEAP,317.77,4.8,322.57,0.03512
+Microservice Mesh,5,3.5,Greedy,317.77,8.4,326.17,1e-05
+Microservice Mesh,5,3.5,Single-Provider,317.77,8.4,326.17,4.3e-05
+Microservice Mesh,5,3.5,Exhaustive,317.77,8.4,326.17,0.002841
+Microservice Mesh,5,3.5,ILP,317.77,8.4,326.17,0.061265
+Microservice Mesh,5,3.5,Simulated Annealing,317.77,8.4,326.17,0.013297
+Microservice Mesh,5,3.5,TEAP,317.77,8.4,326.17,0.032324
+Microservice Mesh,5,5.0,Greedy,317.77,12.0,329.77,1.8e-05
+Microservice Mesh,5,5.0,Single-Provider,317.77,12.0,329.77,7.4e-05
+Microservice Mesh,5,5.0,Exhaustive,317.77,12.0,329.77,0.004024
+Microservice Mesh,5,5.0,ILP,317.77,12.0,329.77,0.082761
+Microservice Mesh,5,5.0,Simulated Annealing,317.77,12.0,329.77,0.0131
+Microservice Mesh,5,5.0,TEAP,317.77,12.0,329.77,0.082285
+Data Pipeline,4,1.0,Greedy,342.41,3.6,346.01,1e-05
+Data Pipeline,4,1.0,Single-Provider,342.41,3.6,346.01,3.6e-05
+Data Pipeline,4,1.0,Exhaustive,342.41,3.6,346.01,0.000808
+Data Pipeline,4,1.0,ILP,342.41,3.6,346.01,0.051156
+Data Pipeline,4,1.0,Simulated Annealing,342.41,3.6,346.01,0.009632
+Data Pipeline,4,1.0,TEAP,342.41,3.6,346.01,0.03308
+Data Pipeline,4,2.0,Greedy,342.41,7.2,349.61,1e-05
+Data Pipeline,4,2.0,Single-Provider,342.41,7.2,349.61,3.6e-05
+Data Pipeline,4,2.0,Exhaustive,342.41,7.2,349.61,0.000696
+Data Pipeline,4,2.0,ILP,342.41,7.2,349.61,0.046164
+Data Pipeline,4,2.0,Simulated Annealing,342.41,7.2,349.61,0.010683
+Data Pipeline,4,2.0,TEAP,342.41,7.2,349.61,0.030851
+Data Pipeline,4,3.5,Greedy,342.41,12.6,355.01,9e-06
+Data Pipeline,4,3.5,Single-Provider,342.41,12.6,355.01,3.4e-05
+Data Pipeline,4,3.5,Exhaustive,342.41,12.6,355.01,0.000717
+Data Pipeline,4,3.5,ILP,342.41,12.6,355.01,0.049345
+Data Pipeline,4,3.5,Simulated Annealing,342.41,12.6,355.01,0.013026
+Data Pipeline,4,3.5,TEAP,342.41,12.6,355.01,0.03164
+Data Pipeline,4,5.0,Greedy,342.41,18.0,360.41,1.3e-05
+Data Pipeline,4,5.0,Single-Provider,342.41,18.0,360.41,5.1e-05
+Data Pipeline,4,5.0,Exhaustive,342.41,18.0,360.41,0.000695
+Data Pipeline,4,5.0,ILP,342.41,18.0,360.41,0.048872
+Data Pipeline,4,5.0,Simulated Annealing,342.41,18.0,360.41,0.00979
+Data Pipeline,4,5.0,TEAP,342.41,18.0,360.41,0.031495
+ML Training,3,1.0,Greedy,440.39,0.6,440.99,1e-05
 ML Training,3,1.0,Single-Provider,440.39,0.6,440.99,3.3e-05
-ML Training,3,1.0,Exhaustive,440.39,0.6,440.99,0.000222
-ML Training,3,1.0,ILP,440.39,0.6,440.99,0.043666
-ML Training,3,1.0,Simulated Annealing,440.39,0.6,440.99,0.008806
-ML Training,3,1.0,TEAP,440.39,0.6,440.99,0.000564
+ML Training,3,1.0,Exhaustive,440.39,0.6,440.99,0.000218
+ML Training,3,1.0,ILP,440.39,0.6,440.99,0.043685
+ML Training,3,1.0,Simulated Annealing,440.39,0.6,440.99,0.010767
+ML Training,3,1.0,TEAP,440.39,0.6,440.99,0.000786
 ML Training,3,2.0,Greedy,440.39,1.2,441.59,7e-06
-ML Training,3,2.0,Single-Provider,440.39,1.2,441.59,2.5e-05
-ML Training,3,2.0,Exhaustive,440.39,1.2,441.59,0.000262
-ML Training,3,2.0,ILP,440.39,1.2,441.59,0.039945
-ML Training,3,2.0,Simulated Annealing,440.39,1.2,441.59,0.007793
-ML Training,3,2.0,TEAP,440.39,1.2,441.59,0.000563
-ML Training,3,3.5,Greedy,440.39,2.1,442.49,1e-05
-ML Training,3,3.5,Single-Provider,440.39,2.1,442.49,4e-05
-ML Training,3,3.5,Exhaustive,440.39,2.1,442.49,0.000289
-ML Training,3,3.5,ILP,440.39,2.1,442.49,0.038775
-ML Training,3,3.5,Simulated Annealing,440.39,2.1,442.49,0.011606
-ML Training,3,3.5,TEAP,440.39,2.1,442.49,0.000843
-ML Training,3,5.0,Greedy,440.39,3.0,443.39,8e-06
-ML Training,3,5.0,Single-Provider,440.39,3.0,443.39,2.6e-05
-ML Training,3,5.0,Exhaustive,440.39,3.0,443.39,0.000161
-ML Training,3,5.0,ILP,440.39,3.0,443.39,0.039842
-ML Training,3,5.0,Simulated Annealing,440.39,3.0,443.39,0.006549
-ML Training,3,5.0,TEAP,440.39,3.0,443.39,0.000602
-CodeCourt,5,1.0,Greedy,365.34,18.6,383.94,1.3e-05
-CodeCourt,5,1.0,Single-Provider,370.3,1.8,372.1,5.9e-05
-CodeCourt,5,1.0,Exhaustive,370.3,1.8,372.1,0.003391
-CodeCourt,5,1.0,ILP,370.3,1.8,372.1,0.05137
-CodeCourt,5,1.0,Simulated Annealing,370.3,1.8,372.1,0.009427
-CodeCourt,5,1.0,TEAP,370.3,1.8,372.1,0.044405
-CodeCourt,5,2.0,Greedy,365.34,37.2,402.54,1.3e-05
-CodeCourt,5,2.0,Single-Provider,370.3,3.6,373.9,3.6e-05
-CodeCourt,5,2.0,Exhaustive,370.3,3.6,373.9,0.002098
-CodeCourt,5,2.0,ILP,370.3,3.6,373.9,0.055865
-CodeCourt,5,2.0,Simulated Annealing,370.3,3.6,373.9,0.009447
-CodeCourt,5,2.0,TEAP,370.3,3.6,373.9,0.042793
-CodeCourt,5,3.5,Greedy,365.34,65.1,430.44,1e-05
-CodeCourt,5,3.5,Single-Provider,370.3,6.3,376.6,3.6e-05
-CodeCourt,5,3.5,Exhaustive,370.3,6.3,376.6,0.002035
-CodeCourt,5,3.5,ILP,370.3,6.3,376.6,0.056419
-CodeCourt,5,3.5,Simulated Annealing,370.3,6.3,376.6,0.010084
-CodeCourt,5,3.5,TEAP,370.3,6.3,376.6,0.034138
-CodeCourt,5,5.0,Greedy,365.34,93.0,458.34,1.6e-05
-CodeCourt,5,5.0,Single-Provider,370.3,9.0,379.3,6.4e-05
-CodeCourt,5,5.0,Exhaustive,370.3,9.0,379.3,0.002538
-CodeCourt,5,5.0,ILP,370.3,9.0,379.3,0.054581
-CodeCourt,5,5.0,Simulated Annealing,370.3,9.0,379.3,0.010144
-CodeCourt,5,5.0,TEAP,370.3,9.0,379.3,0.035735
+ML Training,3,2.0,Single-Provider,440.39,1.2,441.59,3.1e-05
+ML Training,3,2.0,Exhaustive,440.39,1.2,441.59,0.000206
+ML Training,3,2.0,ILP,440.39,1.2,441.59,0.044289
+ML Training,3,2.0,Simulated Annealing,440.39,1.2,441.59,0.011504
+ML Training,3,2.0,TEAP,440.39,1.2,441.59,0.000725
+ML Training,3,3.5,Greedy,440.39,2.1,442.49,7e-06
+ML Training,3,3.5,Single-Provider,440.39,2.1,442.49,3.2e-05
+ML Training,3,3.5,Exhaustive,440.39,2.1,442.49,0.000216
+ML Training,3,3.5,ILP,440.39,2.1,442.49,0.04106
+ML Training,3,3.5,Simulated Annealing,440.39,2.1,442.49,0.009178
+ML Training,3,3.5,TEAP,440.39,2.1,442.49,0.000708
+ML Training,3,5.0,Greedy,440.39,3.0,443.39,1.3e-05
+ML Training,3,5.0,Single-Provider,440.39,3.0,443.39,5.2e-05
+ML Training,3,5.0,Exhaustive,440.39,3.0,443.39,0.00032
+ML Training,3,5.0,ILP,440.39,3.0,443.39,0.044741
+ML Training,3,5.0,Simulated Annealing,440.39,3.0,443.39,0.008675
+ML Training,3,5.0,TEAP,440.39,3.0,443.39,0.000749
+CodeCourt,5,1.0,Greedy,365.34,21.6,386.94,1.2e-05
+CodeCourt,5,1.0,Single-Provider,370.3,4.8,375.1,4.7e-05
+CodeCourt,5,1.0,Exhaustive,370.3,4.8,375.1,0.003094
+CodeCourt,5,1.0,ILP,370.3,4.8,375.1,0.06768
+CodeCourt,5,1.0,Simulated Annealing,370.3,4.8,375.1,0.016238
+CodeCourt,5,1.0,TEAP,370.3,4.8,375.1,0.047096
+CodeCourt,5,2.0,Greedy,365.34,43.2,408.54,1e-05
+CodeCourt,5,2.0,Single-Provider,370.3,9.6,379.9,4.9e-05
+CodeCourt,5,2.0,Exhaustive,370.3,9.6,379.9,0.003054
+CodeCourt,5,2.0,ILP,370.3,9.6,379.9,0.089933
+CodeCourt,5,2.0,Simulated Annealing,370.3,9.6,379.9,0.019219
+CodeCourt,5,2.0,TEAP,370.3,9.6,379.9,0.067396
+CodeCourt,5,3.5,Greedy,365.34,75.6,440.94,1.1e-05
+CodeCourt,5,3.5,Single-Provider,370.3,16.8,387.1,4.9e-05
+CodeCourt,5,3.5,Exhaustive,370.3,16.8,387.1,0.003342
+CodeCourt,5,3.5,ILP,370.3,16.8,387.1,0.063331
+CodeCourt,5,3.5,Simulated Annealing,370.3,16.8,387.1,0.014093
+CodeCourt,5,3.5,TEAP,370.3,16.8,387.1,0.046337
+CodeCourt,5,5.0,Greedy,365.34,108.0,473.34,1.1e-05
+CodeCourt,5,5.0,Single-Provider,370.3,24.0,394.3,4.9e-05
+CodeCourt,5,5.0,Exhaustive,370.3,24.0,394.3,0.003442
+CodeCourt,5,5.0,ILP,370.3,24.0,394.3,0.061945
+CodeCourt,5,5.0,Simulated Annealing,370.3,24.0,394.3,0.014454
+CodeCourt,5,5.0,TEAP,370.3,24.0,394.3,0.055726
+E-Commerce,5,1.0,Greedy,291.78,105.6,397.38,1.3e-05
+E-Commerce,5,1.0,Single-Provider,317.48,60.9,378.38,4.7e-05
+E-Commerce,5,1.0,Exhaustive,305.79,70.2,375.99,0.002905
+E-Commerce,5,1.0,ILP,305.79,70.2,375.99,0.075414
+E-Commerce,5,1.0,Simulated Annealing,305.79,70.2,375.99,0.016612
+E-Commerce,5,1.0,TEAP,305.79,70.2,375.99,0.060765
+E-Commerce,5,2.0,Greedy,291.78,211.2,502.98,1.1e-05
+E-Commerce,5,2.0,Single-Provider,317.48,121.8,439.28,4.7e-05
+E-Commerce,5,2.0,Exhaustive,317.48,121.8,439.28,0.002833
+E-Commerce,5,2.0,ILP,317.48,121.8,439.28,0.11973
+E-Commerce,5,2.0,Simulated Annealing,317.48,121.8,439.28,0.012764
+E-Commerce,5,2.0,TEAP,317.48,121.8,439.28,0.037183
+E-Commerce,5,3.5,Greedy,291.78,369.6,661.38,1.1e-05
+E-Commerce,5,3.5,Single-Provider,317.48,213.15,530.63,4.6e-05
+E-Commerce,5,3.5,Exhaustive,317.48,213.15,530.63,0.00307
+E-Commerce,5,3.5,ILP,317.48,213.15,530.63,0.075622
+E-Commerce,5,3.5,Simulated Annealing,317.48,213.15,530.63,0.01401
+E-Commerce,5,3.5,TEAP,317.48,213.15,530.63,0.035723
+E-Commerce,5,5.0,Greedy,291.78,528.0,819.78,1.2e-05
+E-Commerce,5,5.0,Single-Provider,317.48,304.5,621.98,4.9e-05
+E-Commerce,5,5.0,Exhaustive,317.48,304.5,621.98,0.002936
+E-Commerce,5,5.0,ILP,317.48,304.5,621.98,0.073025
+E-Commerce,5,5.0,Simulated Annealing,317.48,304.5,621.98,0.013097
+E-Commerce,5,5.0,TEAP,317.48,304.5,621.98,0.039225

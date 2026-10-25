@@ -1,20 +1,16 @@
-"""5-Component CodeCourt topology — real-world case study."""
+﻿"""5-Component CodeCourt topology -- real-world case study."""
 from src.topology.base import Topology, Component
 
 
 def create_codecourt_topology() -> Topology:
     """
-    CodeCourt online judge — 5 real components:
-    Nginx → API Server → Redis (BullMQ) → Judge Workers → PostgreSQL
-
-    Based on the actual CodeCourt architecture. Traffic estimates are
-    derived from typical online judge workloads (hundreds of submissions/day).
+    CodeCourt online judge -- 5 real components.
+    R3 Audit: Added api_server->Internet 25 GB. Total traffic: 400 GB/mo.
     """
     t = Topology(
         name="CodeCourt",
         description="Online judge: frontend, API, queue, workers, database",
     )
-
     t.add_component(Component("nginx", "frontend", vcpu=1, ram_gb=2,
                               description="Nginx serving React frontend"))
     t.add_component(Component("api_server", "api_gateway", vcpu=2, ram_gb=8,
@@ -24,15 +20,19 @@ def create_codecourt_topology() -> Topology:
     t.add_component(Component("judge_workers", "worker", vcpu=4, ram_gb=16,
                               description="Docker-based code execution workers"))
     t.add_component(Component("postgres", "db_tier", vcpu=4, ram_gb=32,
-                              description="PostgreSQL — users, submissions, results"))
-
-    # Communication pattern based on CodeCourt's actual architecture
-    t.add_traffic("nginx", "api_server", 50)          # Frontend API calls
-    t.add_traffic("api_server", "redis", 30)          # Job enqueue
-    t.add_traffic("redis", "judge_workers", 100)      # Job dispatch + code payloads
-    t.add_traffic("judge_workers", "postgres", 80)    # Write results back
-    t.add_traffic("api_server", "postgres", 60)       # User queries, submission history
-    t.add_traffic("judge_workers", "redis", 40)       # Job completion events
-    t.add_traffic("nginx", "Internet", 15)            # Static assets, CDN misses
-
+                              description="PostgreSQL -- users, submissions, results"))
+    t.add_traffic("nginx", "api_server", 50)
+    t.add_traffic("api_server", "redis", 30)
+    t.add_traffic("redis", "judge_workers", 100)
+    t.add_traffic("judge_workers", "postgres", 80)
+    t.add_traffic("api_server", "postgres", 60)
+    t.add_traffic("judge_workers", "redis", 40)
+    t.add_traffic("nginx", "Internet", 15)
+    t.add_traffic("api_server", "Internet", 25)
     return t
+
+
+CODECOURT_LATENCY_SLA = {
+    "nginx": 50, "api_server": 100, "redis": 5,
+    "judge_workers": 500, "postgres": 10,
+}

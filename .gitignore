@@ -28,3 +28,6 @@ Thumbs.db
 
 # Cache
 results/cache/
+
+# Excluded interview files
+*cisco_sre_interview_prep*
