@@ -1,0 +1,58 @@
+{
+  "architecture": "CodeCourt Online Judge",
+  "summary": {
+    "components": 5,
+    "total_traffic_gb_mo": 420.0,
+    "greedy_cost_mo": 558.03,
+    "teap_cost_mo": 544.73,
+    "ilp_optimal_mo": 544.73,
+    "monthly_savings": 13.3,
+    "annual_savings": 159.6,
+    "savings_pct": 2.38,
+    "components_moved": 2,
+    "egress_eliminated_mo": 23.22
+  },
+  "teap_placement": {
+    "nginx": "GCP",
+    "api_server": "GCP",
+    "redis": "GCP",
+    "judge_workers": "GCP",
+    "postgres": "GCP"
+  },
+  "greedy_placement": {
+    "nginx": "GCP",
+    "api_server": "GCP",
+    "redis": "Azure",
+    "judge_workers": "GCP",
+    "postgres": "Azure"
+  },
+  "egress_waste_eliminated": [
+    {
+      "Traffic Edge": "api_server \u2192 redis",
+      "Volume (GB/mo)": "80",
+      "Greedy Clouds": "GCP \u2192 Azure",
+      "TEAP Clouds": "GCP \u2192 GCP",
+      "Greedy Egress": "$9.60",
+      "TEAP Egress": "$0.00",
+      "Monthly Saving": "$9.60"
+    },
+    {
+      "Traffic Edge": "api_server \u2192 postgres",
+      "Volume (GB/mo)": "70",
+      "Greedy Clouds": "GCP \u2192 Azure",
+      "TEAP Clouds": "GCP \u2192 GCP",
+      "Greedy Egress": "$8.40",
+      "TEAP Egress": "$0.00",
+      "Monthly Saving": "$8.40"
+    },
+    {
+      "Traffic Edge": "postgres \u2192 api_server",
+      "Volume (GB/mo)": "60",
+      "Greedy Clouds": "Azure \u2192 GCP",
+      "TEAP Clouds": "GCP \u2192 GCP",
+      "Greedy Egress": "$5.22",
+      "TEAP Egress": "$0.00",
+      "Monthly Saving": "$5.22"
+    }
+  ]
+}
